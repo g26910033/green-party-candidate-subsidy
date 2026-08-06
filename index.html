@@ -43,7 +43,7 @@
       line-height: 1.55;
     }
 
-    button, input { font: inherit; }
+    button, input, textarea { font: inherit; }
 
     button { -webkit-tap-highlight-color: transparent; }
 
@@ -327,7 +327,8 @@
       font-weight: 750;
     }
 
-    input {
+    input,
+    textarea {
       width: 100%;
       min-height: 42px;
       padding: 9px 11px;
@@ -339,14 +340,17 @@
       transition: border-color 120ms ease, box-shadow 120ms ease;
     }
 
-    input:hover { border-color: #9fb2a5; }
+    input:hover,
+    textarea:hover { border-color: #9fb2a5; }
 
-    input:focus {
+    input:focus,
+    textarea:focus {
       border-color: var(--leaf);
       box-shadow: 0 0 0 3px rgba(121, 185, 65, 0.18);
     }
 
-    input:disabled {
+    input:disabled,
+    textarea:disabled {
       color: #50635a;
       border-color: #dce4de;
       background: #f3f6f3;
@@ -356,6 +360,13 @@
     button:disabled {
       cursor: not-allowed;
       opacity: 0.48;
+    }
+
+    textarea {
+      display: block;
+      resize: none;
+      overflow: hidden;
+      line-height: 1.5;
     }
 
     .item-name { font-weight: 700; }
@@ -747,9 +758,12 @@
       .metric-label { margin-bottom: 10px; }
       .metric-value { font-size: 23px; }
       .section-head { align-items: flex-start; flex-direction: column; }
-      .ledger-item { grid-template-columns: minmax(0, 1fr) 112px 34px; }
+      .ledger-item { grid-template-columns: minmax(0, 1fr) 36px; }
       .items { padding-inline: 15px; }
       .panel-head, .panel-actions { padding-inline: 16px; }
+      .item-main { grid-column: 1 / -1; }
+      .ledger-item > div:nth-child(2) { grid-column: 1; max-width: 180px; }
+      .ledger-item .delete-btn { grid-column: 2; grid-row: 2; }
       .allocation-head { align-items: flex-start; flex-direction: column; padding: 21px 19px; }
       .pool-amount { text-align: left; }
       .allocation-notice { margin-inline: 14px; }
@@ -1038,6 +1052,11 @@
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
 
+      function resizeTextArea(textarea) {
+        textarea.style.height = "auto";
+        textarea.style.height = `${textarea.scrollHeight}px`;
+      }
+
       function editorTokenFromLink() {
         const fragment = new URLSearchParams(window.location.hash.slice(1));
         const token = fragment.get("edit");
@@ -1061,7 +1080,7 @@
 
       function applyAccessMode() {
         const editable = Boolean(editorToken);
-        document.querySelectorAll("input, button[data-add], .delete-btn, #reset-data").forEach((element) => {
+        document.querySelectorAll("input, textarea, button[data-add], .delete-btn, #reset-data").forEach((element) => {
           element.disabled = !editable;
         });
       }
@@ -1196,8 +1215,8 @@
           <div class="ledger-item" data-item-id="${escapeHtml(item.id)}" data-ledger="${type}">
             <div class="item-main">
               <label class="field-label" for="${type}-${escapeHtml(item.id)}-name">項目</label>
-              <input class="item-name" id="${type}-${escapeHtml(item.id)}-name" data-field="name" value="${escapeHtml(item.name)}" aria-label="項目名稱">
-              <input class="item-note" data-field="note" value="${escapeHtml(item.note || "")}" placeholder="新增備註（選填）" aria-label="項目備註">
+              <textarea class="item-name" id="${type}-${escapeHtml(item.id)}-name" data-field="name" rows="1" aria-label="項目名稱">${escapeHtml(item.name)}</textarea>
+              <textarea class="item-note" data-field="note" rows="1" placeholder="新增備註（選填）" aria-label="項目備註">${escapeHtml(item.note || "")}</textarea>
             </div>
             <div>
               <label class="field-label" for="${type}-${escapeHtml(item.id)}-amount">金額（元）</label>
@@ -1241,6 +1260,7 @@
       function renderLedgers() {
         document.getElementById("income-items").innerHTML = ledgerMarkup("income", state.income);
         document.getElementById("expense-items").innerHTML = ledgerMarkup("expenses", state.expenses);
+        document.querySelectorAll(".ledger-item textarea").forEach((textarea) => resizeTextArea(textarea));
       }
 
       function updateCandidateComputations(rows) {
@@ -1318,6 +1338,7 @@
 
       document.addEventListener("input", (event) => {
         if (!editorToken) return;
+        if (event.target.matches(".ledger-item textarea")) resizeTextArea(event.target);
         const ledgerItem = event.target.closest(".ledger-item");
         if (ledgerItem && event.target.dataset.field) {
           const collection = state[ledgerItem.dataset.ledger];
