@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "green-party-subsidy-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-06",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": false,
+  "vars": {
+    "ALLOWED_ORIGINS": "https://gpt.greenparty.org.tw,https://g26910033.github.io"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "green-party-subsidy",
+      "database_id": "5cc4d091-cd61-467f-b46c-38b271e50303",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}

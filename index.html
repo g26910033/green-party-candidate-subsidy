@@ -346,6 +346,18 @@
       box-shadow: 0 0 0 3px rgba(121, 185, 65, 0.18);
     }
 
+    input:disabled {
+      color: #50635a;
+      border-color: #dce4de;
+      background: #f3f6f3;
+      cursor: not-allowed;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.48;
+    }
+
     .item-name { font-weight: 700; }
 
     .item-note {
@@ -569,7 +581,7 @@
 
     .allocation-footer {
       display: grid;
-      grid-template-columns: 1.2fr repeat(3, 1fr);
+      grid-template-columns: 1.4fr repeat(2, 1fr);
       gap: 10px;
       padding: 18px 24px 22px;
       border-top: 1px solid var(--line);
@@ -612,6 +624,91 @@
 
     .danger-copy { color: var(--red) !important; font-weight: 700; }
 
+    .law-card {
+      grid-column: 1 / -1;
+      overflow: hidden;
+    }
+
+    .law-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 24px;
+      color: white;
+      background: var(--forest);
+    }
+
+    .law-head h3 { margin: 0; font-size: 20px; }
+
+    .law-head p {
+      max-width: 720px;
+      margin: 6px 0 0;
+      color: #cfe2d9;
+      font-size: 13px;
+    }
+
+    .law-link {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      color: var(--forest);
+      border-radius: 9px;
+      background: #dff0cf;
+      font-size: 12px;
+      font-weight: 850;
+      text-decoration: none;
+    }
+
+    .law-link:hover,
+    .law-link:focus-visible { background: white; outline: none; }
+
+    .law-limits {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .law-limit {
+      min-height: 112px;
+      padding: 18px 20px;
+      background: white;
+    }
+
+    .law-limit.relevant { background: var(--leaf-soft); }
+
+    .law-number {
+      display: block;
+      color: var(--leaf);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+    }
+
+    .law-limit strong {
+      display: block;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    .law-amount {
+      display: block;
+      margin-top: 5px;
+      color: var(--forest-2);
+      font-size: 19px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 900;
+    }
+
+    .law-note {
+      margin: 0;
+      padding: 15px 20px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      background: #f7faf7;
+      font-size: 12px;
+    }
+
     .bottom-actions {
       display: flex;
       justify-content: space-between;
@@ -635,8 +732,9 @@
     @media (max-width: 960px) {
       .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .ledger-grid, .explain-grid { grid-template-columns: 1fr; }
-      .allocation-footer { grid-template-columns: repeat(3, 1fr); }
+      .allocation-footer { grid-template-columns: repeat(2, 1fr); }
       .footer-note { grid-column: 1 / -1; }
+      .law-limits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 640px) {
@@ -657,6 +755,9 @@
       .allocation-notice { margin-inline: 14px; }
       .allocation-footer { grid-template-columns: 1fr; padding-inline: 18px; }
       .footer-stat { display: flex; justify-content: space-between; align-items: baseline; text-align: left; }
+      .law-head { flex-direction: column; padding: 21px 19px; }
+      .law-limits { grid-template-columns: 1fr; }
+      .law-limit { min-height: 0; }
       .bottom-actions { align-items: flex-start; flex-direction: column; }
     }
 
@@ -674,7 +775,7 @@
     <header class="hero">
       <p class="eyebrow">候選人財務規劃</p>
       <h1>候選人補助分配</h1>
-      <p class="hero-copy">集中試算黨部可分配資金、保證金補助、額外補助與黨轉獻金。所有輸入都只自動保存在這台裝置的瀏覽器中，不需登入。</p>
+      <p class="hero-copy">集中試算黨部可分配資金、保證金補助、額外補助與黨轉獻金。資料會自動同步到共享雲端；公開網址可檢視最新資料，持有秘密編輯連結者不需登入即可修改。</p>
       <div class="hero-meta">
         <span class="save-state"><span class="save-dot"></span><span id="save-label">已自動保存</span></span>
         <span id="updated-at">計算資料載入中</span>
@@ -785,10 +886,6 @@
             <small>補助合計</small>
             <strong id="subsidy-total">—</strong>
           </div>
-          <div class="footer-stat">
-            <small>含黨轉獻金總計</small>
-            <strong id="grand-total">—</strong>
-          </div>
         </div>
       </article>
     </section>
@@ -803,14 +900,56 @@
         </ol>
       </article>
       <article class="panel explain-card">
-        <h3>設定的總額警示線</h3>
+        <h3>個別候選人警示線</h3>
         <p>市議員為 NT$500,000；市民代表為 NT$100,000。警示總額包含「保證金補助＋額外補助＋黨轉獻金」。</p>
         <p class="danger-copy" id="overall-warning" style="margin-top:8px">目前無候選人超過警示線。</p>
+      </article>
+      <article class="panel law-card">
+        <div class="law-head">
+          <div>
+            <h3>《政治獻金法》第 18 條第 2 項</h3>
+            <p>政黨對其推薦的同一組擬參選人提供金錢捐贈時，依選舉類別適用以下上限。</p>
+          </div>
+          <a class="law-link" href="https://multimedia.cy.gov.tw/law/LawContent.aspx?id=FL029130" target="_blank" rel="noopener noreferrer">查看監察院完整條文 ↗</a>
+        </div>
+        <div class="law-limits" aria-label="政黨捐贈推薦候選人上限">
+          <div class="law-limit">
+            <span class="law-number">第一款</span>
+            <strong>總統、副總統</strong>
+            <span class="law-amount">NT$25,000,000</span>
+          </div>
+          <div class="law-limit">
+            <span class="law-number">第二款</span>
+            <strong>立法委員</strong>
+            <span class="law-amount">NT$2,000,000</span>
+          </div>
+          <div class="law-limit">
+            <span class="law-number">第三款</span>
+            <strong>直轄市長、縣（市）長</strong>
+            <span class="law-amount">NT$3,000,000</span>
+          </div>
+          <div class="law-limit relevant">
+            <span class="law-number">第四款 · 本頁採用</span>
+            <strong>直轄市議員、縣（市）議員</strong>
+            <span class="law-amount">NT$500,000</span>
+          </div>
+          <div class="law-limit">
+            <span class="law-number">第五款</span>
+            <strong>鄉（鎮、市）長、直轄市山地原住民區長</strong>
+            <span class="law-amount">NT$300,000</span>
+          </div>
+          <div class="law-limit relevant">
+            <span class="law-number">第六款 · 本頁採用</span>
+            <strong>鄉（鎮、市）民代表、直轄市山地原住民區民代表、村（里）長</strong>
+            <span class="law-amount">NT$100,000</span>
+          </div>
+        </div>
+        <p class="law-note">本頁僅將「保證金補助＋額外補助＋黨轉獻金」與上述個別上限比較，供內部試算；實際申報與適用身分仍以主管機關最新認定為準。</p>
       </article>
     </section>
 
     <footer class="bottom-actions">
-      <span>資料僅存於目前瀏覽器；更換裝置、清除網站資料或使用無痕模式時不會同步。</span>
+      <span>公開頁面只供檢視；資料修改會同步到共享雲端。秘密編輯連結請只提供給需要共同維護的人。</span>
       <button class="button ghost" type="button" id="reset-data">恢復最初資料</button>
     </footer>
   </main>
@@ -819,7 +958,8 @@
     (() => {
       "use strict";
 
-      const STORAGE_KEY = "green-party-candidate-subsidy:v1";
+      const API_URL = "https://green-party-subsidy-api.greenpartytaiwan.workers.dev";
+      const EDITOR_TOKEN_KEY = "green-party-candidate-subsidy:editor-token:v1";
 
       const INITIAL_DATA = {
         income: [
@@ -898,43 +1038,113 @@
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
 
-      function loadState() {
+      function editorTokenFromLink() {
+        const fragment = new URLSearchParams(window.location.hash.slice(1));
+        const token = fragment.get("edit");
+        if (token && /^[a-f0-9]{64}$/i.test(token)) {
+          sessionStorage.setItem(EDITOR_TOKEN_KEY, token);
+          window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+        }
+        return sessionStorage.getItem(EDITOR_TOKEN_KEY) || "";
+      }
+
+      const editorToken = editorTokenFromLink();
+      let state = clone(INITIAL_DATA);
+      let revision = 0;
+      let saveTimer = null;
+      let saveInProgress = false;
+      let pendingSave = false;
+
+      function setSaveLabel(label) {
+        document.getElementById("save-label").textContent = label;
+      }
+
+      function applyAccessMode() {
+        const editable = Boolean(editorToken);
+        document.querySelectorAll("input, button[data-add], .delete-btn, #reset-data").forEach((element) => {
+          element.disabled = !editable;
+        });
+      }
+
+      function validRemoteState(data) {
+        return data
+          && Array.isArray(data.income)
+          && Array.isArray(data.expenses)
+          && Array.isArray(data.candidates);
+      }
+
+      async function loadRemoteState(showStatus = true) {
+        if (showStatus) setSaveLabel("載入共享資料…");
         try {
-          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-          if (!saved || !Array.isArray(saved.income) || !Array.isArray(saved.expenses) || !Array.isArray(saved.candidates)) {
-            return clone(INITIAL_DATA);
+          const response = await fetch(`${API_URL}/state`, { cache: "no-store" });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const payload = await response.json();
+          if (payload.data && validRemoteState(payload.data)) {
+            state = payload.data;
+            revision = Number.isInteger(payload.revision) ? payload.revision : 0;
+            renderAll();
+            setSaveLabel(editorToken ? "共享雲端・可編輯" : "共享雲端・公開檢視");
+          } else if (editorToken) {
+            setSaveLabel("正在建立共享資料…");
+            scheduleSave();
+          } else {
+            setSaveLabel("共享資料尚未建立");
           }
-          const defaultCandidates = new Map(INITIAL_DATA.candidates.map((candidate) => [candidate.id, candidate]));
-          saved.candidates = saved.candidates.map((candidate) => ({
-            ...(defaultCandidates.get(candidate.id) || {}),
-            ...candidate
-          }));
-          return saved;
         } catch (error) {
-          return clone(INITIAL_DATA);
+          setSaveLabel("暫時無法讀取共享資料");
         }
       }
 
-      let state = loadState();
-      let saveTimer = null;
+      async function saveState() {
+        if (!editorToken || saveInProgress || !pendingSave) return;
+        saveInProgress = true;
+        try {
+          while (pendingSave) {
+            pendingSave = false;
+            const snapshot = clone(state);
+            setSaveLabel("正在同步到共享雲端…");
+            const response = await fetch(`${API_URL}/state`, {
+              method: "PUT",
+              headers: {
+                "Authorization": `Bearer ${editorToken}`,
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ data: snapshot, revision })
+            });
 
-      function saveState() {
-        state.updatedAt = new Date().toISOString();
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        document.getElementById("save-label").textContent = "已自動保存";
-        updateTimestamp();
+            if (response.status === 409) {
+              await loadRemoteState(false);
+              window.alert("其他人剛更新資料，畫面已重新載入最新版本；請確認後再修改。");
+              return;
+            }
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const payload = await response.json();
+            revision = Number.isInteger(payload.revision) ? payload.revision : revision + 1;
+            state.updatedAt = payload.updatedAt || new Date().toISOString();
+            updateTimestamp();
+            setSaveLabel("已同步到共享雲端");
+          }
+        } catch (error) {
+          pendingSave = true;
+          setSaveLabel("同步失敗，將自動重試");
+          window.setTimeout(saveState, 5000);
+        } finally {
+          saveInProgress = false;
+        }
       }
 
       function scheduleSave() {
-        document.getElementById("save-label").textContent = "正在保存…";
+        if (!editorToken) return;
+        pendingSave = true;
+        setSaveLabel("等待同步…");
         clearTimeout(saveTimer);
-        saveTimer = setTimeout(saveState, 180);
+        saveTimer = window.setTimeout(saveState, 450);
       }
 
       function updateTimestamp() {
         const label = document.getElementById("updated-at");
         if (!state.updatedAt) {
-          label.textContent = "目前顯示最初財務資料";
+          label.textContent = "共享資料載入中";
           return;
         }
         const date = new Date(state.updatedAt);
@@ -1051,9 +1261,7 @@
 
       function renderCalculations(preserveCandidateInputs = false) {
         const calc = calculations();
-        const donationTotal = calc.rows.reduce((sum, row) => sum + row.donation, 0);
         const subsidyTotal = calc.rows.reduce((sum, row) => sum + row.subtotal, 0);
-        const grandTotal = subsidyTotal + donationTotal;
 
         document.getElementById("metric-income").textContent = money.format(calc.incomeTotal);
         document.getElementById("metric-expense").textContent = `−${money.format(calc.expenseTotal)}`;
@@ -1072,7 +1280,6 @@
         }
         document.getElementById("deposit-total").textContent = money.format(calc.depositTotal);
         document.getElementById("subsidy-total").textContent = money.format(subsidyTotal);
-        document.getElementById("grand-total").textContent = money.format(grandTotal);
 
         const ratioNote = document.getElementById("ratio-note");
         if (calc.ratioTotal === 0) {
@@ -1106,9 +1313,11 @@
         renderLedgers();
         renderCalculations();
         updateTimestamp();
+        applyAccessMode();
       }
 
       document.addEventListener("input", (event) => {
+        if (!editorToken) return;
         const ledgerItem = event.target.closest(".ledger-item");
         if (ledgerItem && event.target.dataset.field) {
           const collection = state[ledgerItem.dataset.ledger];
@@ -1139,6 +1348,7 @@
       });
 
       document.addEventListener("change", (event) => {
+        if (!editorToken) return;
         if (event.target.matches("input[type='number']")) {
           const candidateRow = event.target.closest("[data-candidate-id]");
           const field = event.target.dataset.candidateField;
@@ -1154,6 +1364,7 @@
       });
 
       document.addEventListener("click", (event) => {
+        if (!editorToken) return;
         const addType = event.target.dataset.add;
         if (addType) {
           const label = addType === "income" ? "新增收入" : "新增支出";
@@ -1176,14 +1387,18 @@
       });
 
       document.getElementById("reset-data").addEventListener("click", () => {
+        if (!editorToken) return;
         if (!window.confirm("要清除目前調整，恢復最初提供的收支與分配資料嗎？")) return;
         state = clone(INITIAL_DATA);
-        localStorage.removeItem(STORAGE_KEY);
         renderAll();
-        document.getElementById("save-label").textContent = "已恢復最初資料";
+        scheduleSave();
       });
 
       renderAll();
+      loadRemoteState();
+      window.setInterval(() => {
+        if (!saveInProgress && !pendingSave) loadRemoteState(false);
+      }, 15000);
     })();
   </script>
 </body>
