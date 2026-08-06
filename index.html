@@ -541,6 +541,8 @@
       text-align: right;
     }
 
+    .candidate-input-wrap { width: 100%; }
+
     .input-affix { position: relative; }
 
     .input-affix input { padding-right: 29px; }
@@ -772,6 +774,53 @@
       .law-head { flex-direction: column; padding: 21px 19px; }
       .law-limits { grid-template-columns: 1fr; }
       .law-limit { min-height: 0; }
+      .candidate-table-wrap { overflow: visible; }
+      .candidate-table { display: block; min-width: 0; }
+      .candidate-table thead { display: none; }
+      .candidate-table tbody { display: block; }
+      .candidate-table tr {
+        display: block;
+        margin: 12px 14px;
+        padding: 14px 15px 8px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fff;
+      }
+      .candidate-table td,
+      .candidate-table td:first-child,
+      .candidate-table td:last-child {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 48px;
+        padding: 9px 0;
+        border-bottom: 1px solid #edf1ed;
+        text-align: right;
+      }
+      .candidate-table td:first-child {
+        display: block;
+        padding: 0 0 12px;
+        border-bottom: 2px solid var(--leaf-soft);
+        text-align: left;
+      }
+      .candidate-table td:last-child { border-bottom: 0; }
+      .candidate-table td[data-label]::before {
+        content: attr(data-label);
+        flex: 1 1 auto;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        text-align: left;
+      }
+      .candidate-table .candidate-input-wrap {
+        width: min(180px, 54vw);
+        margin-left: auto;
+      }
+      .candidate-table .candidate-input-wrap .field-label { text-align: right; }
+      .candidate-table .input-affix { width: min(180px, 54vw); margin-left: auto; }
+      .candidate-table .computed { font-size: 15px; }
+      .candidate-table .final-summary { width: min(180px, 54vw); text-align: right; }
       .bottom-actions { align-items: flex-start; flex-direction: column; }
     }
 
@@ -1234,24 +1283,30 @@
               <div class="candidate-name">${escapeHtml(candidate.name)}</div>
               <span class="candidate-role">${escapeHtml(candidate.role)}</span>
             </td>
-            <td>
-              <input data-candidate-field="depositAid" type="number" min="0" max="${candidate.depositCap}" step="1" inputmode="numeric" value="${asAmount(candidate.depositAid)}" aria-label="${escapeHtml(candidate.name)}保證金補助">
-              <span class="field-label" style="margin:4px 0 0">最高 ${money.format(candidate.depositCap)}</span>
+            <td data-label="保證金補助">
+              <div class="candidate-input-wrap">
+                <input data-candidate-field="depositAid" type="number" min="0" max="${candidate.depositCap}" step="1" inputmode="numeric" value="${asAmount(candidate.depositAid)}" aria-label="${escapeHtml(candidate.name)}保證金補助">
+                <span class="field-label" style="margin:4px 0 0">最高 ${money.format(candidate.depositCap)}</span>
+              </div>
             </td>
-            <td>
+            <td data-label="額外補助比例">
               <div class="input-affix">
                 <input data-candidate-field="ratio" type="number" min="0" max="100" step="0.1" inputmode="decimal" value="${asRatio(candidate.ratio)}" aria-label="${escapeHtml(candidate.name)}額外補助比例">
                 <span>%</span>
               </div>
             </td>
-            <td class="computed" data-computed="extra">${money.format(extra)}</td>
-            <td class="computed subtotal" data-computed="subtotal">${money.format(subtotal)}</td>
-            <td>
-              <input data-candidate-field="donation" type="number" min="0" step="1" inputmode="numeric" value="${asAmount(candidate.donation)}" aria-label="${escapeHtml(candidate.name)}黨轉獻金">
+            <td class="computed" data-label="額外補助" data-computed="extra">${money.format(extra)}</td>
+            <td class="computed subtotal" data-label="補助小計" data-computed="subtotal">${money.format(subtotal)}</td>
+            <td data-label="黨轉獻金">
+              <div class="candidate-input-wrap">
+                <input data-candidate-field="donation" type="number" min="0" step="1" inputmode="numeric" value="${asAmount(candidate.donation)}" aria-label="${escapeHtml(candidate.name)}黨轉獻金">
+              </div>
             </td>
-            <td class="final-cell">
-              <strong class="final-amount" data-computed="final">${money.format(finalTotal)}</strong>
-              <span class="limit-status${over ? " over" : ""}" data-computed="limit">${over ? `超過上限 ${money.format(finalTotal - candidate.limit)}` : `距上限 ${money.format(candidate.limit - finalTotal)}`}</span>
+            <td class="final-cell" data-label="含黨轉獻金／上限">
+              <div class="final-summary">
+                <strong class="final-amount" data-computed="final">${money.format(finalTotal)}</strong>
+                <span class="limit-status${over ? " over" : ""}" data-computed="limit">${over ? `超過上限 ${money.format(finalTotal - candidate.limit)}` : `距上限 ${money.format(candidate.limit - finalTotal)}`}</span>
+              </div>
             </td>
           </tr>
         `).join("");
