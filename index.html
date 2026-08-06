@@ -1,0 +1,1190 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123f31">
+  <meta name="description" content="綠黨候選人補助分配試算：管理收入、支出、保證金補助、額外補助與黨轉獻金。">
+  <title>綠黨候選人補助分配</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --forest: #123f31;
+      --forest-2: #1d5c47;
+      --leaf: #79b941;
+      --leaf-soft: #e8f3dc;
+      --mint: #f1f7ef;
+      --paper: #fbfaf5;
+      --ink: #173028;
+      --muted: #62736c;
+      --line: #d9e2db;
+      --amber: #b96a12;
+      --amber-soft: #fff3de;
+      --red: #b64343;
+      --red-soft: #fff0ed;
+      --white: #ffffff;
+      --shadow: 0 16px 40px rgba(18, 63, 49, 0.09);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 10px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 90% 4%, rgba(121, 185, 65, 0.13), transparent 28rem),
+        linear-gradient(180deg, #f7faf4 0, var(--paper) 34rem);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      line-height: 1.55;
+    }
+
+    button, input { font: inherit; }
+
+    button { -webkit-tap-highlight-color: transparent; }
+
+    .top-rule {
+      height: 7px;
+      background: linear-gradient(90deg, var(--forest) 0 32%, var(--leaf) 32% 100%);
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 38px 0 64px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 40px;
+      color: var(--white);
+      border-radius: 28px;
+      background: var(--forest);
+      box-shadow: var(--shadow);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      width: 300px;
+      height: 300px;
+      right: -85px;
+      top: -175px;
+      border: 48px solid rgba(121, 185, 65, 0.38);
+    }
+
+    .hero::after {
+      width: 180px;
+      height: 180px;
+      right: 122px;
+      bottom: -142px;
+      border: 30px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .eyebrow {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 13px;
+      color: #cbe8b0;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 27px;
+      height: 3px;
+      border-radius: 99px;
+      background: var(--leaf);
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0;
+      font-size: clamp(32px, 5vw, 58px);
+      line-height: 1.08;
+      letter-spacing: -0.045em;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+      max-width: 650px;
+      margin: 18px 0 0;
+      color: #d8e7e0;
+      font-size: 16px;
+    }
+
+    .hero-meta {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 18px;
+      margin-top: 28px;
+      color: #d8e7e0;
+      font-size: 13px;
+    }
+
+    .save-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      color: var(--forest);
+      border-radius: 999px;
+      background: #dff0cf;
+      font-weight: 750;
+    }
+
+    .save-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--leaf);
+      box-shadow: 0 0 0 3px rgba(121, 185, 65, 0.18);
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin: 20px 0 38px;
+    }
+
+    .metric {
+      position: relative;
+      min-height: 146px;
+      padding: 22px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 10px 28px rgba(18, 63, 49, 0.055);
+    }
+
+    .metric.primary {
+      color: var(--white);
+      border-color: var(--forest-2);
+      background: var(--forest-2);
+    }
+
+    .metric.primary::after {
+      content: "";
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      right: -34px;
+      bottom: -45px;
+      border-radius: 50%;
+      background: var(--leaf);
+      opacity: 0.34;
+    }
+
+    .metric-label {
+      display: block;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .metric.primary .metric-label,
+    .metric.primary .metric-note { color: #cfe2d9; }
+
+    .metric-value {
+      display: block;
+      font-size: clamp(24px, 3vw, 34px);
+      font-variant-numeric: tabular-nums;
+      font-weight: 850;
+      letter-spacing: -0.035em;
+      white-space: nowrap;
+    }
+
+    .metric-note {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+      margin: 0 0 16px;
+    }
+
+    .section-kicker {
+      margin: 0 0 4px;
+      color: var(--leaf);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0.12em;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 34px);
+      letter-spacing: -0.035em;
+    }
+
+    .section-desc {
+      max-width: 550px;
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .ledger-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 44px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.91);
+      box-shadow: var(--shadow);
+    }
+
+    .ledger-panel { overflow: hidden; }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 21px 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .panel-title::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--leaf);
+      box-shadow: 0 0 0 5px var(--leaf-soft);
+    }
+
+    .expense-panel .panel-title::before {
+      background: var(--amber);
+      box-shadow: 0 0 0 5px var(--amber-soft);
+    }
+
+    .panel-total {
+      font-variant-numeric: tabular-nums;
+      font-weight: 850;
+    }
+
+    .items { padding: 8px 22px 0; }
+
+    .ledger-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 138px 36px;
+      gap: 8px;
+      padding: 14px 0;
+      border-bottom: 1px solid #e9eee9;
+    }
+
+    .item-main { min-width: 0; }
+
+    .field-label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    input {
+      width: 100%;
+      min-height: 42px;
+      padding: 9px 11px;
+      color: var(--ink);
+      border: 1px solid #cfdad2;
+      border-radius: 9px;
+      outline: none;
+      background: #fff;
+      transition: border-color 120ms ease, box-shadow 120ms ease;
+    }
+
+    input:hover { border-color: #9fb2a5; }
+
+    input:focus {
+      border-color: var(--leaf);
+      box-shadow: 0 0 0 3px rgba(121, 185, 65, 0.18);
+    }
+
+    .item-name { font-weight: 700; }
+
+    .item-note {
+      min-height: 34px;
+      margin-top: 6px;
+      padding: 6px 8px;
+      color: var(--muted);
+      border-color: transparent;
+      background: transparent;
+      font-size: 12px;
+    }
+
+    .money-input { font-variant-numeric: tabular-nums; text-align: right; }
+
+    .delete-btn {
+      align-self: end;
+      width: 36px;
+      height: 42px;
+      padding: 0;
+      color: #8c9a93;
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .delete-btn:hover,
+    .delete-btn:focus-visible {
+      color: var(--red);
+      outline: none;
+      background: var(--red-soft);
+    }
+
+    .panel-actions {
+      display: flex;
+      padding: 16px 22px 20px;
+    }
+
+    .button {
+      min-height: 42px;
+      padding: 9px 15px;
+      border: 1px solid var(--forest);
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .button.add {
+      color: var(--forest);
+      background: #fff;
+    }
+
+    .button.add:hover { background: var(--mint); }
+
+    .button.ghost {
+      color: var(--muted);
+      border-color: var(--line);
+      background: transparent;
+    }
+
+    .button.ghost:hover { color: var(--red); border-color: #e6b7ae; background: var(--red-soft); }
+
+    .allocation-panel {
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .allocation-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 24px 26px;
+      color: white;
+      background: var(--forest);
+    }
+
+    .allocation-head h3 { margin: 0; font-size: 22px; }
+
+    .allocation-head p { margin: 5px 0 0; color: #cfe2d9; font-size: 13px; }
+
+    .pool-amount {
+      flex: 0 0 auto;
+      text-align: right;
+    }
+
+    .pool-amount small { display: block; color: #cfe2d9; }
+
+    .pool-amount strong {
+      display: block;
+      margin-top: 2px;
+      color: #d9f5bf;
+      font-size: 29px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .allocation-notice {
+      display: none;
+      margin: 16px 22px 0;
+      padding: 12px 14px;
+      color: #7a4210;
+      border: 1px solid #efd5ad;
+      border-radius: 10px;
+      background: var(--amber-soft);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .allocation-notice.show { display: block; }
+
+    .candidate-table-wrap { overflow-x: auto; }
+
+    .candidate-table {
+      width: 100%;
+      min-width: 970px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .candidate-table th {
+      padding: 13px 10px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: #f7faf7;
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: 0.02em;
+      text-align: right;
+      vertical-align: bottom;
+    }
+
+    .candidate-table th:first-child,
+    .candidate-table td:first-child { padding-left: 24px; text-align: left; }
+
+    .candidate-table th:last-child,
+    .candidate-table td:last-child { padding-right: 24px; }
+
+    .candidate-table td {
+      padding: 16px 10px;
+      border-bottom: 1px solid #e8eee9;
+      text-align: right;
+      vertical-align: middle;
+    }
+
+    .candidate-table tr:last-child td { border-bottom: 0; }
+
+    .candidate-table .col-person { width: 150px; }
+    .candidate-table .col-input { width: 133px; }
+    .candidate-table .col-number { width: 122px; }
+    .candidate-table .col-final { width: 168px; }
+
+    .candidate-name { font-size: 16px; font-weight: 850; }
+
+    .candidate-role {
+      display: inline-block;
+      margin-top: 5px;
+      padding: 3px 7px;
+      color: var(--forest-2);
+      border-radius: 999px;
+      background: var(--leaf-soft);
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .candidate-table input {
+      min-height: 40px;
+      padding: 8px 9px;
+      text-align: right;
+    }
+
+    .input-affix { position: relative; }
+
+    .input-affix input { padding-right: 29px; }
+
+    .input-affix span {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      color: var(--muted);
+      pointer-events: none;
+      transform: translateY(-50%);
+      font-size: 12px;
+    }
+
+    .computed {
+      font-variant-numeric: tabular-nums;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .computed.subtotal { color: var(--forest-2); }
+
+    .final-cell { text-align: left !important; }
+
+    .final-amount {
+      display: block;
+      font-size: 17px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .limit-status {
+      display: inline-block;
+      margin-top: 5px;
+      padding: 3px 7px;
+      color: #4c705e;
+      border-radius: 999px;
+      background: #eef5f0;
+      font-size: 10px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .limit-status.over {
+      color: #9d3434;
+      background: var(--red-soft);
+    }
+
+    .allocation-footer {
+      display: grid;
+      grid-template-columns: 1.2fr repeat(3, 1fr);
+      gap: 10px;
+      padding: 18px 24px 22px;
+      border-top: 1px solid var(--line);
+      background: #f7faf7;
+    }
+
+    .footer-note {
+      align-self: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .footer-stat { text-align: right; }
+
+    .footer-stat small { display: block; color: var(--muted); font-size: 11px; }
+
+    .footer-stat strong {
+      display: block;
+      margin-top: 2px;
+      font-size: 19px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .explain-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 18px;
+    }
+
+    .explain-card { padding: 22px 24px; }
+
+    .explain-card h3 { margin: 0 0 8px; font-size: 17px; }
+
+    .explain-card p,
+    .explain-card ol { margin: 0; color: var(--muted); font-size: 13px; }
+
+    .explain-card ol { padding-left: 20px; }
+
+    .explain-card li + li { margin-top: 5px; }
+
+    .danger-copy { color: var(--red) !important; font-weight: 700; }
+
+    .bottom-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .noscript {
+      width: min(760px, calc(100% - 32px));
+      margin: 24px auto;
+      padding: 16px;
+      color: var(--red);
+      border: 1px solid #e6b7ae;
+      border-radius: 12px;
+      background: var(--red-soft);
+    }
+
+    @media (max-width: 960px) {
+      .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .ledger-grid, .explain-grid { grid-template-columns: 1fr; }
+      .allocation-footer { grid-template-columns: repeat(3, 1fr); }
+      .footer-note { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 640px) {
+      .shell { width: min(100% - 20px, 1180px); padding: 18px 0 42px; }
+      .hero { padding: 28px 23px; border-radius: 20px; }
+      .hero::before { opacity: 0.55; }
+      .hero-meta { align-items: flex-start; flex-direction: column; }
+      .summary-grid { gap: 10px; margin-bottom: 32px; }
+      .metric { min-height: 128px; padding: 17px 15px; }
+      .metric-label { margin-bottom: 10px; }
+      .metric-value { font-size: 23px; }
+      .section-head { align-items: flex-start; flex-direction: column; }
+      .ledger-item { grid-template-columns: minmax(0, 1fr) 112px 34px; }
+      .items { padding-inline: 15px; }
+      .panel-head, .panel-actions { padding-inline: 16px; }
+      .allocation-head { align-items: flex-start; flex-direction: column; padding: 21px 19px; }
+      .pool-amount { text-align: left; }
+      .allocation-notice { margin-inline: 14px; }
+      .allocation-footer { grid-template-columns: 1fr; padding-inline: 18px; }
+      .footer-stat { display: flex; justify-content: space-between; align-items: baseline; text-align: left; }
+      .bottom-actions { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-rule"></div>
+  <noscript><div class="noscript">此頁面需要啟用 JavaScript 才能計算與保存資料。</div></noscript>
+
+  <main class="shell">
+    <header class="hero">
+      <p class="eyebrow">候選人財務規劃</p>
+      <h1>候選人補助分配</h1>
+      <p class="hero-copy">集中試算黨部可分配資金、保證金補助、額外補助與黨轉獻金。所有輸入都只自動保存在這台裝置的瀏覽器中，不需登入。</p>
+      <div class="hero-meta">
+        <span class="save-state"><span class="save-dot"></span><span id="save-label">已自動保存</span></span>
+        <span id="updated-at">計算資料載入中</span>
+      </div>
+    </header>
+
+    <section class="summary-grid" aria-label="財務摘要">
+      <article class="metric">
+        <span class="metric-label">捐贈收入</span>
+        <strong class="metric-value" id="metric-income">—</strong>
+        <span class="metric-note" id="metric-income-count">共 0 筆收入</span>
+      </article>
+      <article class="metric">
+        <span class="metric-label">已支出／應支未支</span>
+        <strong class="metric-value" id="metric-expense">—</strong>
+        <span class="metric-note" id="metric-expense-count">共 0 筆支出</span>
+      </article>
+      <article class="metric primary">
+        <span class="metric-label">目前可分配金額</span>
+        <strong class="metric-value" id="metric-available">—</strong>
+        <span class="metric-note">捐贈收入減支出</span>
+      </article>
+      <article class="metric">
+        <span class="metric-label">扣除保證金後額外補助</span>
+        <strong class="metric-value" id="metric-extra">—</strong>
+        <span class="metric-note" id="metric-deposit-note">保證金補助合計 —</span>
+      </article>
+    </section>
+
+    <section aria-labelledby="ledger-heading">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">收支基礎</p>
+          <h2 id="ledger-heading">每一筆，都能說明</h2>
+          <p class="section-desc">可直接修改名稱、金額與備註，也能新增或刪除項目。支出請輸入正數，系統會自動以扣除方式計算。</p>
+        </div>
+      </div>
+
+      <div class="ledger-grid">
+        <article class="panel ledger-panel income-panel">
+          <div class="panel-head">
+            <h3 class="panel-title">捐贈收入</h3>
+            <strong class="panel-total" id="income-total">—</strong>
+          </div>
+          <div class="items" id="income-items"></div>
+          <div class="panel-actions">
+            <button class="button add" type="button" data-add="income">＋ 新增收入</button>
+          </div>
+        </article>
+
+        <article class="panel ledger-panel expense-panel">
+          <div class="panel-head">
+            <h3 class="panel-title">已支出／應支未支</h3>
+            <strong class="panel-total" id="expense-total">—</strong>
+          </div>
+          <div class="items" id="expense-items"></div>
+          <div class="panel-actions">
+            <button class="button add" type="button" data-add="expenses">＋ 新增支出</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="allocation-heading">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">候選人分配</p>
+          <h2 id="allocation-heading">補助配置試算</h2>
+          <p class="section-desc">先調整保證金補助，再以比例分完剩餘額外補助；比例合計不為 100% 時，系統會自動換算成相對占比。</p>
+        </div>
+      </div>
+
+      <article class="panel allocation-panel">
+        <div class="allocation-head">
+          <div>
+            <h3>候選人配置表</h3>
+            <p>保證金補助預設全額；額外補助以整數元分配，尾數依比例由上至下補足。</p>
+          </div>
+          <div class="pool-amount">
+            <small>額外補助池</small>
+            <strong id="extra-pool">—</strong>
+          </div>
+        </div>
+        <div class="allocation-notice" id="allocation-notice" role="status"></div>
+        <div class="candidate-table-wrap">
+          <table class="candidate-table">
+            <thead>
+              <tr>
+                <th class="col-person">候選人／類別</th>
+                <th class="col-input">保證金補助</th>
+                <th class="col-input">額外補助比例</th>
+                <th class="col-number">額外補助</th>
+                <th class="col-number">補助小計</th>
+                <th class="col-input">黨轉獻金</th>
+                <th class="col-final">＋黨轉獻金總額／上限</th>
+              </tr>
+            </thead>
+            <tbody id="candidate-rows"></tbody>
+          </table>
+        </div>
+        <div class="allocation-footer">
+          <div class="footer-note" id="ratio-note">額外補助比例合計 100%，目前依原比例分配。</div>
+          <div class="footer-stat">
+            <small>保證金補助合計</small>
+            <strong id="deposit-total">—</strong>
+          </div>
+          <div class="footer-stat">
+            <small>補助合計</small>
+            <strong id="subsidy-total">—</strong>
+          </div>
+          <div class="footer-stat">
+            <small>含黨轉獻金總計</small>
+            <strong id="grand-total">—</strong>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="explain-grid" aria-label="計算與警示說明">
+      <article class="panel explain-card">
+        <h3>計算順序</h3>
+        <ol>
+          <li>收入合計－支出合計＝目前可分配金額。</li>
+          <li>可分配金額－保證金補助合計＝額外補助池。</li>
+          <li>額外補助池依各候選人輸入比例自動分配，再加上黨轉獻金。</li>
+        </ol>
+      </article>
+      <article class="panel explain-card">
+        <h3>設定的總額警示線</h3>
+        <p>市議員為 NT$500,000；市民代表為 NT$100,000。警示總額包含「保證金補助＋額外補助＋黨轉獻金」。</p>
+        <p class="danger-copy" id="overall-warning" style="margin-top:8px">目前無候選人超過警示線。</p>
+      </article>
+    </section>
+
+    <footer class="bottom-actions">
+      <span>資料僅存於目前瀏覽器；更換裝置、清除網站資料或使用無痕模式時不會同步。</span>
+      <button class="button ghost" type="button" id="reset-data">恢復最初資料</button>
+    </footer>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const STORAGE_KEY = "green-party-candidate-subsidy:v1";
+
+      const INITIAL_DATA = {
+        income: [
+          {
+            id: "income-anniversary",
+            name: "30 週年捐贈收減支",
+            amount: 528038,
+            note: "收入 790,379－支出 262,341"
+          },
+          {
+            id: "income-orders",
+            name: "0213–0805 應援單捐",
+            amount: 67522,
+            note: "已減指定王振庭之「張凱敦」、游子昂之「陳美玉」各 10,000"
+          },
+          {
+            id: "income-transfer",
+            name: "直匯專戶",
+            amount: 503500,
+            note: "台灣熱 300,000＋洪門 200,000＋3,000＋500"
+          }
+        ],
+        expenses: [
+          {
+            id: "expense-fixed",
+            name: "至明年卸任前本黨固定收支短缺",
+            amount: 62708,
+            note: "固定收入：定期定額 250,940＋2027 黨費 69,500；固定支出 383,148"
+          },
+          {
+            id: "expense-wang-staff",
+            name: "3–11 月振庭人事費",
+            amount: 204590,
+            note: "含勞健保退單位支出"
+          },
+          {
+            id: "expense-cheng-staff",
+            name: "6–11 月程人事費",
+            amount: 105000,
+            note: ""
+          },
+          {
+            id: "expense-dinners",
+            name: "四黨餐會支出",
+            amount: 18800,
+            note: "台北 10,000＋高雄 8,800"
+          }
+        ],
+        candidates: [
+          { id: "gan", name: "甘崇緯", role: "市議員", depositCap: 160000, depositAid: 160000, ratio: 25, donation: 0, limit: 500000 },
+          { id: "wang", name: "王振庭", role: "市議員", depositCap: 160000, depositAid: 160000, ratio: 25, donation: 0, limit: 500000 },
+          { id: "chang", name: "張佑輔", role: "市議員", depositCap: 160000, depositAid: 160000, ratio: 25, donation: 0, limit: 500000 },
+          { id: "you", name: "游子昂", role: "市民代表", depositCap: 30000, depositAid: 30000, ratio: 25, donation: 0, limit: 100000 }
+        ],
+        updatedAt: null
+      };
+
+      const integer = new Intl.NumberFormat("zh-TW", { maximumFractionDigits: 0 });
+      const number = new Intl.NumberFormat("zh-TW", { maximumFractionDigits: 2 });
+      const money = { format: (value) => `NT$${integer.format(value)}` };
+
+      const clone = (value) => JSON.parse(JSON.stringify(value));
+      const uid = (prefix) => `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      const asAmount = (value) => {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? Math.max(0, Math.round(parsed)) : 0;
+      };
+      const asRatio = (value) => {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? Math.max(0, Math.min(100, parsed)) : 0;
+      };
+      const escapeHtml = (value) => String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+      function loadState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          if (!saved || !Array.isArray(saved.income) || !Array.isArray(saved.expenses) || !Array.isArray(saved.candidates)) {
+            return clone(INITIAL_DATA);
+          }
+          const defaultCandidates = new Map(INITIAL_DATA.candidates.map((candidate) => [candidate.id, candidate]));
+          saved.candidates = saved.candidates.map((candidate) => ({
+            ...(defaultCandidates.get(candidate.id) || {}),
+            ...candidate
+          }));
+          return saved;
+        } catch (error) {
+          return clone(INITIAL_DATA);
+        }
+      }
+
+      let state = loadState();
+      let saveTimer = null;
+
+      function saveState() {
+        state.updatedAt = new Date().toISOString();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        document.getElementById("save-label").textContent = "已自動保存";
+        updateTimestamp();
+      }
+
+      function scheduleSave() {
+        document.getElementById("save-label").textContent = "正在保存…";
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(saveState, 180);
+      }
+
+      function updateTimestamp() {
+        const label = document.getElementById("updated-at");
+        if (!state.updatedAt) {
+          label.textContent = "目前顯示最初財務資料";
+          return;
+        }
+        const date = new Date(state.updatedAt);
+        label.textContent = Number.isNaN(date.getTime())
+          ? "資料已載入"
+          : `最後調整：${date.toLocaleString("zh-TW", { hour12: false })}`;
+      }
+
+      function allocateWholeDollars(total, candidates) {
+        const weights = candidates.map((candidate) => asRatio(candidate.ratio));
+        const weightTotal = weights.reduce((sum, value) => sum + value, 0);
+        if (total <= 0 || weightTotal <= 0) return candidates.map(() => 0);
+
+        const exact = weights.map((weight) => total * weight / weightTotal);
+        const allocated = exact.map(Math.floor);
+        let remainder = total - allocated.reduce((sum, value) => sum + value, 0);
+        const order = exact
+          .map((value, index) => ({ index, fraction: value - Math.floor(value) }))
+          .sort((a, b) => b.fraction - a.fraction || a.index - b.index);
+
+        for (let index = 0; index < remainder; index += 1) {
+          allocated[order[index % order.length].index] += 1;
+        }
+        return allocated;
+      }
+
+      function calculations() {
+        const incomeTotal = state.income.reduce((sum, item) => sum + asAmount(item.amount), 0);
+        const expenseTotal = state.expenses.reduce((sum, item) => sum + asAmount(item.amount), 0);
+        const available = incomeTotal - expenseTotal;
+        const depositTotal = state.candidates.reduce((sum, candidate) => sum + asAmount(candidate.depositAid), 0);
+        const rawExtraPool = available - depositTotal;
+        const extraPool = Math.max(0, rawExtraPool);
+        const extraAllocations = allocateWholeDollars(extraPool, state.candidates);
+        const ratioTotal = state.candidates.reduce((sum, candidate) => sum + asRatio(candidate.ratio), 0);
+        const rows = state.candidates.map((candidate, index) => {
+          const depositAid = asAmount(candidate.depositAid);
+          const donation = asAmount(candidate.donation);
+          const extra = extraAllocations[index];
+          const subtotal = depositAid + extra;
+          const finalTotal = subtotal + donation;
+          return { candidate, depositAid, donation, extra, subtotal, finalTotal, over: finalTotal > candidate.limit };
+        });
+        return { incomeTotal, expenseTotal, available, depositTotal, rawExtraPool, extraPool, ratioTotal, rows };
+      }
+
+      function ledgerMarkup(type, items) {
+        return items.map((item) => `
+          <div class="ledger-item" data-item-id="${escapeHtml(item.id)}" data-ledger="${type}">
+            <div class="item-main">
+              <label class="field-label" for="${type}-${escapeHtml(item.id)}-name">項目</label>
+              <input class="item-name" id="${type}-${escapeHtml(item.id)}-name" data-field="name" value="${escapeHtml(item.name)}" aria-label="項目名稱">
+              <input class="item-note" data-field="note" value="${escapeHtml(item.note || "")}" placeholder="新增備註（選填）" aria-label="項目備註">
+            </div>
+            <div>
+              <label class="field-label" for="${type}-${escapeHtml(item.id)}-amount">金額（元）</label>
+              <input class="money-input" id="${type}-${escapeHtml(item.id)}-amount" data-field="amount" type="number" min="0" step="1" inputmode="numeric" value="${asAmount(item.amount)}" aria-label="項目金額">
+            </div>
+            <button class="delete-btn" type="button" data-delete="${type}" data-id="${escapeHtml(item.id)}" aria-label="刪除${escapeHtml(item.name)}" title="刪除此項">×</button>
+          </div>
+        `).join("");
+      }
+
+      function candidateMarkup(rows) {
+        return rows.map(({ candidate, extra, subtotal, finalTotal, over }) => `
+          <tr data-candidate-id="${escapeHtml(candidate.id)}">
+            <td>
+              <div class="candidate-name">${escapeHtml(candidate.name)}</div>
+              <span class="candidate-role">${escapeHtml(candidate.role)}</span>
+            </td>
+            <td>
+              <input data-candidate-field="depositAid" type="number" min="0" max="${candidate.depositCap}" step="1" inputmode="numeric" value="${asAmount(candidate.depositAid)}" aria-label="${escapeHtml(candidate.name)}保證金補助">
+              <span class="field-label" style="margin:4px 0 0">最高 ${money.format(candidate.depositCap)}</span>
+            </td>
+            <td>
+              <div class="input-affix">
+                <input data-candidate-field="ratio" type="number" min="0" max="100" step="0.1" inputmode="decimal" value="${asRatio(candidate.ratio)}" aria-label="${escapeHtml(candidate.name)}額外補助比例">
+                <span>%</span>
+              </div>
+            </td>
+            <td class="computed" data-computed="extra">${money.format(extra)}</td>
+            <td class="computed subtotal" data-computed="subtotal">${money.format(subtotal)}</td>
+            <td>
+              <input data-candidate-field="donation" type="number" min="0" step="1" inputmode="numeric" value="${asAmount(candidate.donation)}" aria-label="${escapeHtml(candidate.name)}黨轉獻金">
+            </td>
+            <td class="final-cell">
+              <strong class="final-amount" data-computed="final">${money.format(finalTotal)}</strong>
+              <span class="limit-status${over ? " over" : ""}" data-computed="limit">${over ? `超過上限 ${money.format(finalTotal - candidate.limit)}` : `距上限 ${money.format(candidate.limit - finalTotal)}`}</span>
+            </td>
+          </tr>
+        `).join("");
+      }
+
+      function renderLedgers() {
+        document.getElementById("income-items").innerHTML = ledgerMarkup("income", state.income);
+        document.getElementById("expense-items").innerHTML = ledgerMarkup("expenses", state.expenses);
+      }
+
+      function updateCandidateComputations(rows) {
+        rows.forEach(({ candidate, extra, subtotal, finalTotal, over }) => {
+          const row = Array.from(document.querySelectorAll("[data-candidate-id]"))
+            .find((element) => element.dataset.candidateId === candidate.id);
+          if (!row) return;
+          row.querySelector('[data-computed="extra"]').textContent = money.format(extra);
+          row.querySelector('[data-computed="subtotal"]').textContent = money.format(subtotal);
+          row.querySelector('[data-computed="final"]').textContent = money.format(finalTotal);
+          const status = row.querySelector('[data-computed="limit"]');
+          status.textContent = over
+            ? `超過上限 ${money.format(finalTotal - candidate.limit)}`
+            : `距上限 ${money.format(candidate.limit - finalTotal)}`;
+          status.classList.toggle("over", over);
+        });
+      }
+
+      function renderCalculations(preserveCandidateInputs = false) {
+        const calc = calculations();
+        const donationTotal = calc.rows.reduce((sum, row) => sum + row.donation, 0);
+        const subsidyTotal = calc.rows.reduce((sum, row) => sum + row.subtotal, 0);
+        const grandTotal = subsidyTotal + donationTotal;
+
+        document.getElementById("metric-income").textContent = money.format(calc.incomeTotal);
+        document.getElementById("metric-expense").textContent = `−${money.format(calc.expenseTotal)}`;
+        document.getElementById("metric-available").textContent = money.format(calc.available);
+        document.getElementById("metric-extra").textContent = money.format(calc.extraPool);
+        document.getElementById("metric-income-count").textContent = `共 ${state.income.length} 筆收入`;
+        document.getElementById("metric-expense-count").textContent = `共 ${state.expenses.length} 筆支出`;
+        document.getElementById("metric-deposit-note").textContent = `保證金補助合計 ${money.format(calc.depositTotal)}`;
+        document.getElementById("income-total").textContent = money.format(calc.incomeTotal);
+        document.getElementById("expense-total").textContent = `−${money.format(calc.expenseTotal)}`;
+        document.getElementById("extra-pool").textContent = money.format(calc.extraPool);
+        if (preserveCandidateInputs) {
+          updateCandidateComputations(calc.rows);
+        } else {
+          document.getElementById("candidate-rows").innerHTML = candidateMarkup(calc.rows);
+        }
+        document.getElementById("deposit-total").textContent = money.format(calc.depositTotal);
+        document.getElementById("subsidy-total").textContent = money.format(subsidyTotal);
+        document.getElementById("grand-total").textContent = money.format(grandTotal);
+
+        const ratioNote = document.getElementById("ratio-note");
+        if (calc.ratioTotal === 0) {
+          ratioNote.textContent = "額外補助比例均為 0%，目前不分配額外補助。";
+        } else if (Math.abs(calc.ratioTotal - 100) < 0.0001) {
+          ratioNote.textContent = "額外補助比例合計 100%，目前依原比例分配。";
+        } else {
+          ratioNote.textContent = `輸入比例合計 ${number.format(calc.ratioTotal)}%，已自動換算為相對占比分配。`;
+        }
+
+        const notice = document.getElementById("allocation-notice");
+        if (calc.rawExtraPool < 0) {
+          notice.textContent = `目前設定的保證金補助超過可分配金額 ${money.format(Math.abs(calc.rawExtraPool))}，額外補助暫以 ${money.format(0)} 計。`;
+          notice.classList.add("show");
+        } else if (calc.extraPool > 0 && calc.ratioTotal === 0) {
+          notice.textContent = `尚有 ${money.format(calc.extraPool)} 可分配，但所有額外補助比例都是 0%。`;
+          notice.classList.add("show");
+        } else {
+          notice.textContent = "";
+          notice.classList.remove("show");
+        }
+
+        const overNames = calc.rows.filter((row) => row.over).map((row) => row.candidate.name);
+        const warning = document.getElementById("overall-warning");
+        warning.textContent = overNames.length
+          ? `${overNames.join("、")}目前超過設定的總額警示線。`
+          : "目前無候選人超過警示線。";
+      }
+
+      function renderAll() {
+        renderLedgers();
+        renderCalculations();
+        updateTimestamp();
+      }
+
+      document.addEventListener("input", (event) => {
+        const ledgerItem = event.target.closest(".ledger-item");
+        if (ledgerItem && event.target.dataset.field) {
+          const collection = state[ledgerItem.dataset.ledger];
+          const item = collection.find((entry) => entry.id === ledgerItem.dataset.itemId);
+          if (!item) return;
+          const field = event.target.dataset.field;
+          item[field] = field === "amount" ? asAmount(event.target.value) : event.target.value;
+          if (field === "amount") renderCalculations();
+          scheduleSave();
+          return;
+        }
+
+        const candidateRow = event.target.closest("[data-candidate-id]");
+        const candidateField = event.target.dataset.candidateField;
+        if (candidateRow && candidateField) {
+          const candidate = state.candidates.find((entry) => entry.id === candidateRow.dataset.candidateId);
+          if (!candidate) return;
+          if (candidateField === "ratio") {
+            candidate.ratio = asRatio(event.target.value);
+          } else if (candidateField === "depositAid") {
+            candidate.depositAid = Math.min(candidate.depositCap, asAmount(event.target.value));
+          } else {
+            candidate.donation = asAmount(event.target.value);
+          }
+          renderCalculations(true);
+          scheduleSave();
+        }
+      });
+
+      document.addEventListener("change", (event) => {
+        if (event.target.matches("input[type='number']")) {
+          const candidateRow = event.target.closest("[data-candidate-id]");
+          const field = event.target.dataset.candidateField;
+          if (candidateRow && field) {
+            const candidate = state.candidates.find((entry) => entry.id === candidateRow.dataset.candidateId);
+            if (candidate) {
+              event.target.value = field === "ratio" ? asRatio(candidate[field]) : asAmount(candidate[field]);
+            }
+          } else if (event.target.dataset.field === "amount") {
+            event.target.value = asAmount(event.target.value);
+          }
+        }
+      });
+
+      document.addEventListener("click", (event) => {
+        const addType = event.target.dataset.add;
+        if (addType) {
+          const label = addType === "income" ? "新增收入" : "新增支出";
+          state[addType].push({ id: uid(addType), name: label, amount: 0, note: "" });
+          renderLedgers();
+          renderCalculations();
+          scheduleSave();
+          const items = document.getElementById(`${addType === "income" ? "income" : "expense"}-items`);
+          items.querySelector(".ledger-item:last-child .item-name")?.focus();
+          return;
+        }
+
+        const deleteType = event.target.dataset.delete;
+        if (deleteType) {
+          state[deleteType] = state[deleteType].filter((item) => item.id !== event.target.dataset.id);
+          renderLedgers();
+          renderCalculations();
+          scheduleSave();
+        }
+      });
+
+      document.getElementById("reset-data").addEventListener("click", () => {
+        if (!window.confirm("要清除目前調整，恢復最初提供的收支與分配資料嗎？")) return;
+        state = clone(INITIAL_DATA);
+        localStorage.removeItem(STORAGE_KEY);
+        renderAll();
+        document.getElementById("save-label").textContent = "已恢復最初資料";
+      });
+
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
