@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#123f31">
-  <meta name="description" content="綠黨候選人補助分配試算：管理收入、支出、保證金補助、額外補助與黨轉獻金。">
-  <title>綠黨候選人補助分配</title>
+  <meta name="description" content="綠黨候選人保證金與財務試算：管理收入、支出、候選人保證金與黨轉獻金。">
+  <title>綠黨候選人保證金與款項試算</title>
   <style>
     :root {
       color-scheme: light;
@@ -595,7 +595,7 @@
 
     .allocation-footer {
       display: grid;
-      grid-template-columns: 1.4fr repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
       padding: 18px 24px 22px;
       border-top: 1px solid var(--line);
@@ -746,8 +746,7 @@
     @media (max-width: 960px) {
       .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .ledger-grid, .explain-grid { grid-template-columns: 1fr; }
-      .allocation-footer { grid-template-columns: repeat(2, 1fr); }
-      .footer-note { grid-column: 1 / -1; }
+      .allocation-footer { grid-template-columns: repeat(3, 1fr); }
       .law-limits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
@@ -838,8 +837,8 @@
   <main class="shell">
     <header class="hero">
       <p class="eyebrow">候選人財務規劃</p>
-      <h1>候選人補助分配</h1>
-      <p class="hero-copy">集中試算黨部可分配資金、保證金補助、額外補助與黨轉獻金。資料會自動同步到共享雲端；公開網址可檢視最新資料，持有秘密編輯連結者不需登入即可修改。</p>
+      <h1>候選人保證金與款項試算</h1>
+      <p class="hero-copy">集中試算黨部可分配資金、候選人保證金與黨轉獻金。資料會自動同步到共享雲端；公開網址可檢視最新資料，持有秘密編輯連結者不需登入即可修改。</p>
       <div class="hero-meta">
         <span class="save-state"><span class="save-dot"></span><span id="save-label">已自動保存</span></span>
         <span id="updated-at">計算資料載入中</span>
@@ -863,9 +862,9 @@
         <span class="metric-note">捐贈收入減支出</span>
       </article>
       <article class="metric">
-        <span class="metric-label">扣除保證金後額外補助</span>
+        <span class="metric-label">扣除候選人保證金後剩餘金額</span>
         <strong class="metric-value" id="metric-extra">—</strong>
-        <span class="metric-note" id="metric-deposit-note">保證金補助合計 —</span>
+        <span class="metric-note" id="metric-deposit-note">候選人保證金合計 —</span>
       </article>
     </section>
 
@@ -907,20 +906,16 @@
       <div class="section-head">
         <div>
           <p class="section-kicker">候選人分配</p>
-          <h2 id="allocation-heading">補助配置試算</h2>
-          <p class="section-desc">先調整保證金補助，再以比例分完剩餘額外補助；比例合計不為 100% 時，系統會自動換算成相對占比。</p>
+          <h2 id="allocation-heading">候選人保證金與獻金</h2>
+          <p class="section-desc">此區只記錄候選人保證金與黨轉獻金，並用於檢核個別候選人的法定上限；扣除保證金後的剩餘資金不在此自動分配。</p>
         </div>
       </div>
 
       <article class="panel allocation-panel">
         <div class="allocation-head">
           <div>
-            <h3>候選人配置表</h3>
-            <p>保證金補助預設全額；額外補助以整數元分配，尾數依比例由上至下補足。</p>
-          </div>
-          <div class="pool-amount">
-            <small>額外補助池</small>
-            <strong id="extra-pool">—</strong>
+            <h3>候選人相關款項</h3>
+            <p>候選人保證金預設以全額列入；黨轉獻金僅供個別候選人上限檢核。</p>
           </div>
         </div>
         <div class="allocation-notice" id="allocation-notice" role="status"></div>
@@ -929,26 +924,26 @@
             <thead>
               <tr>
                 <th class="col-person">候選人／類別</th>
-                <th class="col-input">保證金補助</th>
-                <th class="col-input">額外補助比例</th>
-                <th class="col-number">額外補助</th>
-                <th class="col-number">補助小計</th>
+                <th class="col-input">候選人保證金</th>
                 <th class="col-input">黨轉獻金</th>
-                <th class="col-final">＋黨轉獻金總額／上限</th>
+                <th class="col-final">保證金＋獻金／上限</th>
               </tr>
             </thead>
             <tbody id="candidate-rows"></tbody>
           </table>
         </div>
         <div class="allocation-footer">
-          <div class="footer-note" id="ratio-note">額外補助比例合計 100%，目前依原比例分配。</div>
           <div class="footer-stat">
-            <small>保證金補助合計</small>
+            <small>候選人保證金合計</small>
             <strong id="deposit-total">—</strong>
           </div>
           <div class="footer-stat">
-            <small>補助合計</small>
-            <strong id="subsidy-total">—</strong>
+            <small>黨轉獻金合計</small>
+            <strong id="donation-total">—</strong>
+          </div>
+          <div class="footer-stat">
+            <small>候選人相關款項合計</small>
+            <strong id="candidate-total">—</strong>
           </div>
         </div>
       </article>
@@ -959,13 +954,13 @@
         <h3>計算順序</h3>
         <ol>
           <li>收入合計－支出合計＝目前可分配金額。</li>
-          <li>可分配金額－保證金補助合計＝額外補助池。</li>
-          <li>額外補助池依各候選人輸入比例自動分配，再加上黨轉獻金。</li>
+          <li>可分配金額－候選人保證金合計＝剩餘金額。</li>
+          <li>剩餘金額可依黨內決策彈性用於候選人、黨部幹部或其他重要事務；本頁不自動分配。</li>
         </ol>
       </article>
       <article class="panel explain-card">
         <h3>個別候選人警示線</h3>
-        <p>市議員為 NT$500,000；市民代表為 NT$100,000。警示總額包含「保證金補助＋額外補助＋黨轉獻金」。</p>
+        <p>市議員為 NT$500,000；市民代表為 NT$100,000。警示總額包含「候選人保證金＋黨轉獻金」。</p>
         <p class="danger-copy" id="overall-warning" style="margin-top:8px">目前無候選人超過警示線。</p>
       </article>
       <article class="panel law-card">
@@ -1008,7 +1003,7 @@
             <span class="law-amount">NT$100,000</span>
           </div>
         </div>
-        <p class="law-note">本頁僅將「保證金補助＋額外補助＋黨轉獻金」與上述個別上限比較，供內部試算；實際申報與適用身分仍以主管機關最新認定為準。</p>
+        <p class="law-note">本頁僅將「候選人保證金＋黨轉獻金」與上述個別上限比較，供內部試算；實際申報與適用身分仍以主管機關最新認定為準。</p>
       </article>
     </section>
 
@@ -1073,27 +1068,23 @@
           }
         ],
         candidates: [
-          { id: "gan", name: "甘崇緯", role: "市議員", depositCap: 160000, depositAid: 160000, ratio: 25, donation: 0, limit: 500000 },
-          { id: "wang", name: "王振庭", role: "市議員", depositCap: 160000, depositAid: 160000, ratio: 25, donation: 0, limit: 500000 },
-          { id: "chang", name: "張佑輔", role: "市議員", depositCap: 160000, depositAid: 160000, ratio: 25, donation: 0, limit: 500000 },
-          { id: "you", name: "游子昂", role: "市民代表", depositCap: 30000, depositAid: 30000, ratio: 25, donation: 0, limit: 100000 }
+          { id: "gan", name: "甘崇緯", role: "市議員", depositCap: 160000, depositAid: 160000, donation: 0, limit: 500000 },
+          { id: "wang", name: "王振庭", role: "市議員", depositCap: 160000, depositAid: 160000, donation: 0, limit: 500000 },
+          { id: "chang", name: "張佑輔", role: "市議員", depositCap: 160000, depositAid: 160000, donation: 0, limit: 500000 },
+          { id: "you", name: "游子昂", role: "市民代表", depositCap: 30000, depositAid: 30000, donation: 0, limit: 100000 }
         ],
         updatedAt: null
       };
 
       const integer = new Intl.NumberFormat("zh-TW", { maximumFractionDigits: 0 });
-      const number = new Intl.NumberFormat("zh-TW", { maximumFractionDigits: 2 });
       const money = { format: (value) => `NT$${integer.format(value)}` };
+      const signedMoney = (value) => value < 0 ? `−${money.format(Math.abs(value))}` : money.format(value);
 
       const clone = (value) => JSON.parse(JSON.stringify(value));
       const uid = (prefix) => `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
       const asAmount = (value) => {
         const parsed = Number(value);
         return Number.isFinite(parsed) ? Math.max(0, Math.round(parsed)) : 0;
-      };
-      const asRatio = (value) => {
-        const parsed = Number(value);
-        return Number.isFinite(parsed) ? Math.max(0, Math.min(100, parsed)) : 0;
       };
       const escapeHtml = (value) => String(value)
         .replaceAll("&", "&amp;")
@@ -1111,10 +1102,18 @@
         const fragment = new URLSearchParams(window.location.hash.slice(1));
         const token = fragment.get("edit");
         if (token && /^[a-f0-9]{64}$/i.test(token)) {
-          sessionStorage.setItem(EDITOR_TOKEN_KEY, token);
+          try {
+            localStorage.setItem(EDITOR_TOKEN_KEY, token);
+          } catch (error) {
+            return token;
+          }
           window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
         }
-        return sessionStorage.getItem(EDITOR_TOKEN_KEY) || "";
+        try {
+          return localStorage.getItem(EDITOR_TOKEN_KEY) || "";
+        } catch (error) {
+          return "";
+        }
       }
 
       const editorToken = editorTokenFromLink();
@@ -1222,42 +1221,19 @@
           : `最後調整：${date.toLocaleString("zh-TW", { hour12: false })}`;
       }
 
-      function allocateWholeDollars(total, candidates) {
-        const weights = candidates.map((candidate) => asRatio(candidate.ratio));
-        const weightTotal = weights.reduce((sum, value) => sum + value, 0);
-        if (total <= 0 || weightTotal <= 0) return candidates.map(() => 0);
-
-        const exact = weights.map((weight) => total * weight / weightTotal);
-        const allocated = exact.map(Math.floor);
-        let remainder = total - allocated.reduce((sum, value) => sum + value, 0);
-        const order = exact
-          .map((value, index) => ({ index, fraction: value - Math.floor(value) }))
-          .sort((a, b) => b.fraction - a.fraction || a.index - b.index);
-
-        for (let index = 0; index < remainder; index += 1) {
-          allocated[order[index % order.length].index] += 1;
-        }
-        return allocated;
-      }
-
       function calculations() {
         const incomeTotal = state.income.reduce((sum, item) => sum + asAmount(item.amount), 0);
         const expenseTotal = state.expenses.reduce((sum, item) => sum + asAmount(item.amount), 0);
         const available = incomeTotal - expenseTotal;
         const depositTotal = state.candidates.reduce((sum, candidate) => sum + asAmount(candidate.depositAid), 0);
-        const rawExtraPool = available - depositTotal;
-        const extraPool = Math.max(0, rawExtraPool);
-        const extraAllocations = allocateWholeDollars(extraPool, state.candidates);
-        const ratioTotal = state.candidates.reduce((sum, candidate) => sum + asRatio(candidate.ratio), 0);
-        const rows = state.candidates.map((candidate, index) => {
+        const remainingAfterDeposit = available - depositTotal;
+        const rows = state.candidates.map((candidate) => {
           const depositAid = asAmount(candidate.depositAid);
           const donation = asAmount(candidate.donation);
-          const extra = extraAllocations[index];
-          const subtotal = depositAid + extra;
-          const finalTotal = subtotal + donation;
-          return { candidate, depositAid, donation, extra, subtotal, finalTotal, over: finalTotal > candidate.limit };
+          const candidateTotal = depositAid + donation;
+          return { candidate, depositAid, donation, candidateTotal, over: candidateTotal > candidate.limit };
         });
-        return { incomeTotal, expenseTotal, available, depositTotal, rawExtraPool, extraPool, ratioTotal, rows };
+        return { incomeTotal, expenseTotal, available, depositTotal, remainingAfterDeposit, rows };
       }
 
       function ledgerMarkup(type, items) {
@@ -1278,35 +1254,27 @@
       }
 
       function candidateMarkup(rows) {
-        return rows.map(({ candidate, extra, subtotal, finalTotal, over }) => `
+        return rows.map(({ candidate, candidateTotal, over }) => `
           <tr data-candidate-id="${escapeHtml(candidate.id)}">
             <td>
               <div class="candidate-name">${escapeHtml(candidate.name)}</div>
               <span class="candidate-role">${escapeHtml(candidate.role)}</span>
             </td>
-            <td data-label="保證金補助">
+            <td data-label="候選人保證金">
               <div class="candidate-input-wrap">
-                <input data-candidate-field="depositAid" type="number" min="0" max="${candidate.depositCap}" step="1" inputmode="numeric" value="${asAmount(candidate.depositAid)}" aria-label="${escapeHtml(candidate.name)}保證金補助">
+                <input data-candidate-field="depositAid" type="number" min="0" max="${candidate.depositCap}" step="1" inputmode="numeric" value="${asAmount(candidate.depositAid)}" aria-label="${escapeHtml(candidate.name)}候選人保證金">
                 <span class="field-label" style="margin:4px 0 0">最高 ${money.format(candidate.depositCap)}</span>
               </div>
             </td>
-            <td data-label="額外補助比例">
-              <div class="input-affix">
-                <input data-candidate-field="ratio" type="number" min="0" max="100" step="0.1" inputmode="decimal" value="${asRatio(candidate.ratio)}" aria-label="${escapeHtml(candidate.name)}額外補助比例">
-                <span>%</span>
-              </div>
-            </td>
-            <td class="computed" data-label="額外補助" data-computed="extra">${money.format(extra)}</td>
-            <td class="computed subtotal" data-label="補助小計" data-computed="subtotal">${money.format(subtotal)}</td>
             <td data-label="黨轉獻金">
               <div class="candidate-input-wrap">
                 <input data-candidate-field="donation" type="number" min="0" step="1" inputmode="numeric" value="${asAmount(candidate.donation)}" aria-label="${escapeHtml(candidate.name)}黨轉獻金">
               </div>
             </td>
-            <td class="final-cell" data-label="含黨轉獻金／上限">
+            <td class="final-cell" data-label="保證金＋獻金／上限">
               <div class="final-summary">
-                <strong class="final-amount" data-computed="final">${money.format(finalTotal)}</strong>
-                <span class="limit-status${over ? " over" : ""}" data-computed="limit">${over ? `超過上限 ${money.format(finalTotal - candidate.limit)}` : `距上限 ${money.format(candidate.limit - finalTotal)}`}</span>
+                <strong class="final-amount" data-computed="final">${money.format(candidateTotal)}</strong>
+                <span class="limit-status${over ? " over" : ""}" data-computed="limit">${over ? `超過上限 ${money.format(candidateTotal - candidate.limit)}` : `距上限 ${money.format(candidate.limit - candidateTotal)}`}</span>
               </div>
             </td>
           </tr>
@@ -1320,58 +1288,45 @@
       }
 
       function updateCandidateComputations(rows) {
-        rows.forEach(({ candidate, extra, subtotal, finalTotal, over }) => {
+        rows.forEach(({ candidate, candidateTotal, over }) => {
           const row = Array.from(document.querySelectorAll("[data-candidate-id]"))
             .find((element) => element.dataset.candidateId === candidate.id);
           if (!row) return;
-          row.querySelector('[data-computed="extra"]').textContent = money.format(extra);
-          row.querySelector('[data-computed="subtotal"]').textContent = money.format(subtotal);
-          row.querySelector('[data-computed="final"]').textContent = money.format(finalTotal);
+          row.querySelector('[data-computed="final"]').textContent = money.format(candidateTotal);
           const status = row.querySelector('[data-computed="limit"]');
           status.textContent = over
-            ? `超過上限 ${money.format(finalTotal - candidate.limit)}`
-            : `距上限 ${money.format(candidate.limit - finalTotal)}`;
+            ? `超過上限 ${money.format(candidateTotal - candidate.limit)}`
+            : `距上限 ${money.format(candidate.limit - candidateTotal)}`;
           status.classList.toggle("over", over);
         });
       }
 
       function renderCalculations(preserveCandidateInputs = false) {
         const calc = calculations();
-        const subsidyTotal = calc.rows.reduce((sum, row) => sum + row.subtotal, 0);
+        const donationTotal = calc.rows.reduce((sum, row) => sum + row.donation, 0);
+        const candidateTotal = calc.rows.reduce((sum, row) => sum + row.candidateTotal, 0);
 
         document.getElementById("metric-income").textContent = money.format(calc.incomeTotal);
         document.getElementById("metric-expense").textContent = `−${money.format(calc.expenseTotal)}`;
         document.getElementById("metric-available").textContent = money.format(calc.available);
-        document.getElementById("metric-extra").textContent = money.format(calc.extraPool);
+        document.getElementById("metric-extra").textContent = signedMoney(calc.remainingAfterDeposit);
         document.getElementById("metric-income-count").textContent = `共 ${state.income.length} 筆收入`;
         document.getElementById("metric-expense-count").textContent = `共 ${state.expenses.length} 筆支出`;
-        document.getElementById("metric-deposit-note").textContent = `保證金補助合計 ${money.format(calc.depositTotal)}`;
+        document.getElementById("metric-deposit-note").textContent = `候選人保證金合計 ${money.format(calc.depositTotal)}`;
         document.getElementById("income-total").textContent = money.format(calc.incomeTotal);
         document.getElementById("expense-total").textContent = `−${money.format(calc.expenseTotal)}`;
-        document.getElementById("extra-pool").textContent = money.format(calc.extraPool);
         if (preserveCandidateInputs) {
           updateCandidateComputations(calc.rows);
         } else {
           document.getElementById("candidate-rows").innerHTML = candidateMarkup(calc.rows);
         }
         document.getElementById("deposit-total").textContent = money.format(calc.depositTotal);
-        document.getElementById("subsidy-total").textContent = money.format(subsidyTotal);
-
-        const ratioNote = document.getElementById("ratio-note");
-        if (calc.ratioTotal === 0) {
-          ratioNote.textContent = "額外補助比例均為 0%，目前不分配額外補助。";
-        } else if (Math.abs(calc.ratioTotal - 100) < 0.0001) {
-          ratioNote.textContent = "額外補助比例合計 100%，目前依原比例分配。";
-        } else {
-          ratioNote.textContent = `輸入比例合計 ${number.format(calc.ratioTotal)}%，已自動換算為相對占比分配。`;
-        }
+        document.getElementById("donation-total").textContent = money.format(donationTotal);
+        document.getElementById("candidate-total").textContent = money.format(candidateTotal);
 
         const notice = document.getElementById("allocation-notice");
-        if (calc.rawExtraPool < 0) {
-          notice.textContent = `目前設定的保證金補助超過可分配金額 ${money.format(Math.abs(calc.rawExtraPool))}，額外補助暫以 ${money.format(0)} 計。`;
-          notice.classList.add("show");
-        } else if (calc.extraPool > 0 && calc.ratioTotal === 0) {
-          notice.textContent = `尚有 ${money.format(calc.extraPool)} 可分配，但所有額外補助比例都是 0%。`;
+        if (calc.remainingAfterDeposit < 0) {
+          notice.textContent = `目前設定的候選人保證金超過可分配金額 ${money.format(Math.abs(calc.remainingAfterDeposit))}。`;
           notice.classList.add("show");
         } else {
           notice.textContent = "";
@@ -1412,9 +1367,7 @@
         if (candidateRow && candidateField) {
           const candidate = state.candidates.find((entry) => entry.id === candidateRow.dataset.candidateId);
           if (!candidate) return;
-          if (candidateField === "ratio") {
-            candidate.ratio = asRatio(event.target.value);
-          } else if (candidateField === "depositAid") {
+          if (candidateField === "depositAid") {
             candidate.depositAid = Math.min(candidate.depositCap, asAmount(event.target.value));
           } else {
             candidate.donation = asAmount(event.target.value);
@@ -1432,7 +1385,7 @@
           if (candidateRow && field) {
             const candidate = state.candidates.find((entry) => entry.id === candidateRow.dataset.candidateId);
             if (candidate) {
-              event.target.value = field === "ratio" ? asRatio(candidate[field]) : asAmount(candidate[field]);
+              event.target.value = asAmount(candidate[field]);
             }
           } else if (event.target.dataset.field === "amount") {
             event.target.value = asAmount(event.target.value);
