@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123f31">
+  <meta name="description" content="115 年地方選舉台灣綠黨四位提名候選人的政治獻金、競選支出、保證金與競選費用補貼實務問答。">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23123f31'/%3E%3Cpath d='M18 41c11-1 21-10 24-24 7 11 5 23-5 29-7 4-14 2-19-5Z' fill='%2379b941'/%3E%3Cpath d='M20 45c6-7 12-13 21-18' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <title>綠黨候選人政治獻金 Q&amp;A</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --forest: #123f31;
+      --forest-2: #1e6049;
+      --leaf: #79b941;
+      --leaf-dark: #4e8d22;
+      --mint: #edf6e8;
+      --paper: #fbfaf5;
+      --ink: #173028;
+      --muted: #62736c;
+      --line: #d9e2db;
+      --amber: #a55c0c;
+      --amber-soft: #fff3de;
+      --blue: #266b88;
+      --blue-soft: #eaf5f8;
+      --white: #fff;
+      --shadow: 0 18px 44px rgba(18, 63, 49, .09);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 10px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 93% 4%, rgba(121, 185, 65, .15), transparent 26rem),
+        linear-gradient(180deg, #f5faf2 0, var(--paper) 34rem);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      font-size: 17px;
+      line-height: 1.65;
+    }
+    a { color: var(--leaf-dark); }
+    a:hover { color: var(--forest); }
+    :focus-visible { outline: 3px solid #e3a329; outline-offset: 3px; }
+    .skip-link {
+      position: fixed;
+      left: 12px;
+      top: -60px;
+      z-index: 20;
+      padding: 10px 14px;
+      color: var(--white);
+      background: var(--forest);
+      border-radius: 8px;
+    }
+    .skip-link:focus { top: 12px; }
+    .top-rule { height: 7px; background: linear-gradient(90deg, var(--forest) 0 32%, var(--leaf) 32% 100%); }
+    .shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 34px 0 60px; }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(28px, 5vw, 52px);
+      color: var(--white);
+      border-radius: 28px;
+      background: var(--forest);
+      box-shadow: var(--shadow);
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 310px;
+      height: 310px;
+      right: -96px;
+      top: -178px;
+      border: 48px solid rgba(121, 185, 65, .34);
+      border-radius: 50%;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      right: 120px;
+      bottom: -152px;
+      border: 30px solid rgba(255, 255, 255, .08);
+      border-radius: 50%;
+    }
+    .eyebrow, h1, .hero-copy, .hero-meta { position: relative; z-index: 1; }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 13px;
+      color: #cbe8b0;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .14em;
+    }
+    .eyebrow::before { content: ""; width: 27px; height: 3px; border-radius: 99px; background: var(--leaf); }
+    h1 { max-width: 760px; margin: 0; font-size: clamp(34px, 5vw, 62px); line-height: 1.08; letter-spacing: -.045em; }
+    .hero-copy { max-width: 720px; margin: 20px 0 0; color: #d8e7e0; font-size: 19px; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; color: #d8e7e0; font-size: 14px; }
+    .pill { display: inline-flex; align-items: center; gap: 7px; padding: 7px 11px; border-radius: 999px; background: rgba(255, 255, 255, .12); }
+    .pill strong { color: #e6f3d8; }
+
+    .candidate-section { margin: 22px 0 42px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin: 0 0 14px; }
+    .section-heading h2 { margin: 0; font-size: clamp(24px, 3vw, 34px); line-height: 1.2; letter-spacing: -.025em; }
+    .section-heading p { max-width: 600px; margin: 0; color: var(--muted); font-size: 15px; }
+    .candidate-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .candidate-card {
+      display: block;
+      min-height: 160px;
+      padding: 20px;
+      color: var(--ink);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, .9);
+      box-shadow: 0 10px 28px rgba(18, 63, 49, .055);
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .candidate-card:hover { transform: translateY(-3px); border-color: var(--leaf); box-shadow: 0 14px 30px rgba(18, 63, 49, .11); }
+    .candidate-card .role { display: block; margin-bottom: 12px; color: var(--leaf-dark); font-size: 13px; font-weight: 800; letter-spacing: .05em; }
+    .candidate-card h3 { margin: 0 0 7px; font-size: 24px; line-height: 1.15; }
+    .candidate-card p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.5; }
+    .candidate-card .district { display: inline-block; margin-top: 14px; padding: 5px 8px; color: var(--forest); background: var(--mint); border-radius: 7px; font-size: 13px; font-weight: 750; }
+    .candidate-note { margin: 14px 0 0; padding: 13px 16px; color: #70521c; background: var(--amber-soft); border: 1px solid #f1d9a9; border-radius: var(--radius-sm); font-size: 14px; }
+
+    .content-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 34px; align-items: start; }
+    .toc { position: sticky; top: 18px; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius-md); background: rgba(255, 255, 255, .82); }
+    .toc-title { margin: 0 0 10px; color: var(--muted); font-size: 13px; font-weight: 850; letter-spacing: .08em; }
+    .toc a { display: block; padding: 8px 10px; color: var(--ink); text-decoration: none; border-radius: 8px; font-size: 15px; line-height: 1.4; }
+    .toc a:hover { color: var(--forest); background: var(--mint); }
+    .toc .candidate-toc { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+    .qa-stack { display: grid; gap: 14px; }
+    .qa-card { scroll-margin-top: 20px; padding: 24px 26px; border: 1px solid var(--line); border-radius: var(--radius-md); background: rgba(255, 255, 255, .9); box-shadow: 0 8px 24px rgba(18, 63, 49, .045); }
+    .qa-card h2 { margin: 0; font-size: clamp(21px, 2.6vw, 28px); line-height: 1.25; }
+    .qa-card .answer { margin: 14px 0 0; }
+    .qa-card ul, .qa-card ol { margin: 12px 0 0; padding-left: 1.4em; }
+    .qa-card li + li { margin-top: 7px; }
+    .qa-kicker { display: inline-flex; margin-bottom: 10px; padding: 4px 9px; color: var(--leaf-dark); background: var(--mint); border-radius: 6px; font-size: 13px; font-weight: 850; }
+    .example { margin: 16px 0 0; padding: 16px 18px; color: #234e60; background: var(--blue-soft); border-left: 4px solid var(--blue); border-radius: 0 10px 10px 0; }
+    .example strong { display: block; margin-bottom: 4px; color: #174b62; }
+    .legal { margin: 16px 0 0; padding: 16px 18px; background: #f7f8f5; border-left: 4px solid var(--forest-2); border-radius: 0 10px 10px 0; }
+    .legal p { margin: 0; }
+    .legal p + p { margin-top: 10px; }
+    .legal a { font-size: 14px; }
+    .warn { margin: 16px 0 0; padding: 14px 16px; color: #70460f; background: var(--amber-soft); border: 1px solid #f1d9a9; border-radius: 10px; }
+    .candidate-profile { scroll-margin-top: 20px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 20px; align-items: start; padding: 22px; background: var(--forest); border-radius: var(--radius-md); color: var(--white); }
+    .candidate-profile .tag { color: #cbe8b0; font-size: 13px; font-weight: 850; letter-spacing: .06em; }
+    .candidate-profile h2 { margin: 8px 0 8px; font-size: 30px; line-height: 1.15; }
+    .candidate-profile p { margin: 0; color: #d8e7e0; }
+    .candidate-profile .example { margin: 0; color: #1e4f62; background: #f1fbfc; border-left-color: #90d2dc; }
+    .sources { margin-top: 14px; padding: 24px 26px; border: 1px solid var(--line); border-radius: var(--radius-md); background: rgba(255, 255, 255, .88); }
+    .sources h2 { margin: 0 0 10px; font-size: 24px; }
+    .sources ul { margin: 0; padding-left: 1.3em; }
+    .sources li + li { margin-top: 7px; }
+    .sources small { color: var(--muted); }
+    footer { margin-top: 30px; padding-top: 20px; color: var(--muted); border-top: 1px solid var(--line); font-size: 14px; }
+
+    @media (max-width: 980px) {
+      .candidate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .content-layout { grid-template-columns: 1fr; }
+      .toc { position: static; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; padding: 12px; }
+      .toc-title { width: 100%; margin: 0 0 3px 10px; }
+      .toc .candidate-toc { width: 100%; margin-top: 4px; padding-top: 8px; }
+      .toc a { display: inline-block; }
+    }
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      .shell { width: min(100% - 22px, 1180px); padding-top: 22px; }
+      .hero { border-radius: 20px; }
+      .hero-copy { font-size: 17px; }
+      .candidate-grid { grid-template-columns: 1fr; }
+      .candidate-card { min-height: auto; }
+      .qa-card, .sources { padding: 20px 18px; }
+      .candidate-profile { grid-template-columns: 1fr; padding: 19px; }
+      .candidate-profile h2 { font-size: 26px; }
+      .section-heading { display: block; }
+      .section-heading p { margin-top: 8px; }
+    }
+    @media print {
+      body { background: #fff; }
+      .top-rule, .hero { box-shadow: none; }
+      .toc { display: none; }
+      .content-layout { display: block; }
+      .candidate-card, .qa-card, .sources { break-inside: avoid; box-shadow: none; }
+      a { color: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到問答內容</a>
+  <div class="top-rule" aria-hidden="true"></div>
+  <div class="shell">
+    <header class="hero">
+      <p class="eyebrow">115 年地方選舉・共享工作版</p>
+      <h1>綠黨候選人政治獻金 Q&amp;A</h1>
+      <p class="hero-copy">把政治獻金專戶、競選支出、發票與收據、候選人保證金、競選費用補貼及賸餘經費分開看，讓每位候選人都能用同一套方式留存資料與回應實務問題。</p>
+      <div class="hero-meta">
+        <span class="pill"><strong>目前涵蓋</strong> 3 位市議員、1 位市民代表</span>
+        <span class="pill"><strong>候選人名單核對</strong> 2026-09-17</span>
+        <span class="pill"><strong>申報基底</strong> 監察院最新法規與 11503 格式</span>
+      </div>
+    </header>
+
+    <section class="candidate-section" aria-labelledby="candidate-heading">
+      <div class="section-heading">
+        <h2 id="candidate-heading">四位綠黨提名候選人</h2>
+        <p>點選姓名可跳到各自的範例。以下四位是台灣綠黨提名、並在中選會候選人登記名冊中以台灣綠黨列名者。</p>
+      </div>
+      <div class="candidate-grid">
+        <a class="candidate-card" href="#candidate-gan">
+          <span class="role">新北市議員</span>
+          <h3>甘崇緯</h3>
+          <p>新北市第 3 選舉區</p>
+          <span class="district">新莊</span>
+        </a>
+        <a class="candidate-card" href="#candidate-wang">
+          <span class="role">臺北市議員</span>
+          <h3>王振庭</h3>
+          <p>臺北市第 5 選舉區</p>
+          <span class="district">中正、萬華</span>
+        </a>
+        <a class="candidate-card" href="#candidate-chang">
+          <span class="role">新北市議員</span>
+          <h3>張佑輔</h3>
+          <p>新北市第 9 選舉區</p>
+          <span class="district">新店、深坑、石碇、坪林、烏來</span>
+        </a>
+        <a class="candidate-card" href="#candidate-yu">
+          <span class="role">屏東市民代表</span>
+          <h3>游子昂</h3>
+          <p>屏東縣屏東市第 4 選舉區</p>
+          <span class="district">屏東市北區</span>
+        </a>
+      </div>
+      <p class="candidate-note">名單邊界：林裙靜是以無黨籍參選、由台灣綠黨與台灣前進陣線共同推薦的夥伴；因此不列入本頁所稱的「四位綠黨提名候選人」。</p>
+    </section>
+
+    <main id="main" class="content-layout">
+      <nav class="toc" aria-label="頁面導覽">
+        <p class="toc-title">快速導覽</p>
+        <a href="#q1">Q1 專戶與契約</a>
+        <a href="#q2">Q2 發票抬頭</a>
+        <a href="#q3">Q3 仲介與出租人</a>
+        <a href="#q4">Q4 保證金</a>
+        <a href="#q5">Q5 競選費用補貼</a>
+        <a href="#q6">Q6 賸餘與申報</a>
+        <a href="#checklist">申報前清單</a>
+        <div class="candidate-toc">
+          <p class="toc-title">候選人範例</p>
+          <a href="#candidate-gan">甘崇緯</a>
+          <a href="#candidate-wang">王振庭</a>
+          <a href="#candidate-chang">張佑輔</a>
+          <a href="#candidate-yu">游子昂</a>
+        </div>
+      </nav>
+
+      <div class="qa-stack">
+        <article id="q1" class="qa-card">
+          <span class="qa-kicker">契約與專戶</span>
+          <h2>Q1．政治獻金專戶是不是獨立的契約主體？</h2>
+          <div class="answer">
+            <p><strong>不是。</strong>專戶是政治獻金收支的法定帳戶，不等於另成立一個法人。契約要寫真正的交易當事人，並清楚標示候選人身分及由哪個政治獻金專戶付款。</p>
+            <ul>
+              <li>租牆面時，甲乙方應寫實際出租人與候選人／競選服務處的法律關係。</li>
+              <li>製作、施工、廣告代理若是不同供應商，分別留報價、契約或委託內容。</li>
+              <li>不用只因契約出現專戶名稱就另刻一顆「專戶法人章」；用實際簽約人及合法留存的印鑑即可。</li>
+            </ul>
+            <div class="example"><strong>候選人範例</strong>甘崇緯若租用新莊看板，契約應讓人看得出「誰出租、誰提供製作／廣告服務、由甘崇緯的政治獻金專戶付款」，不要只寫一個看不出實際角色的專戶名稱。</div>
+          </div>
+        </article>
+
+        <article id="q2" class="qa-card">
+          <span class="qa-kicker">發票與憑證</span>
+          <h2>Q2．廠商有統一發票時，發票抬頭怎麼填？</h2>
+          <div class="answer">
+            <p>紙本發票的買受人，依 11503 格式說明，原則上寫完整政治獻金專戶名稱，或寫「○○○競選服務處」；電子式發票依格式說明免填買受人欄。候選人是自然人，不要把身分證字號當成營業人的八碼統一編號。</p>
+            <p>發票、契約、付款對象不一致時，先請原開立人或交易相對人補充說明，不要自行塗改發票。</p>
+            <div class="example"><strong>候選人範例</strong>王振庭向廠商購買競選廣告時，發票、報價單、付款紀錄應能對應到王振庭的候選人身分／競選服務處，以及實際提供廣告服務的廠商。</div>
+          </div>
+        </article>
+
+        <article id="q3" class="qa-card">
+          <span class="qa-kicker">房東與仲介</span>
+          <h2>Q3．契約甲方是房東，但發票由仲介開，可以嗎？</h2>
+          <div class="answer">
+            <p>重點不是把所有名稱硬寫成一樣，而是要說清楚仲介的真實角色：</p>
+            <ol>
+              <li><strong>仲介只是房東代理人：</strong>契約可由房東作甲方，但應留房東授權；仲介的發票應說明自己提供的仲介、管理或代辦服務。</li>
+              <li><strong>仲介是實際出租人、合法轉租人或統包服務者：</strong>可由仲介作契約相對人，但要留存出租／轉租權或統包交易的證明。</li>
+            </ol>
+            <p>付款前至少整理：契約、授權或轉租證明、仲介報價與服務內容、發票、匯款證明，以及看板位置與期間的確認紀錄。</p>
+            <div class="example"><strong>候選人範例</strong>張佑輔在新店、深坑、石碇、坪林或烏來租看板時，若由仲介收款並開整筆發票，要先確認仲介到底是代理、轉租，還是提供統包服務。</div>
+          </div>
+        </article>
+
+        <article id="q4" class="qa-card">
+          <span class="qa-kicker">候選人保證金</span>
+          <h2>Q4．候選人保證金從專戶支付，之後退還，怎麼處理？</h2>
+          <div class="answer">
+            <p>要分成「帳簿」和「最後送出的會計報告」看：</p>
+            <ul>
+              <li>從政治獻金專戶支付：付款要記入收支帳簿；未退還時按雜支支出處理。</li>
+              <li>退還回政治獻金專戶：退款以原科目沖銷，不另當成新的政治獻金收入。</li>
+              <li>第一次申報前已退還：最後送出的會計報告不留下這筆淨支出，退款也不另列收入；付款與退款仍要留帳及憑證。</li>
+              <li>第一次申報後才退還：依查核準則第 30 條辦理更正；首次申報有賸餘者，於賸餘會計報告列為其他收入。</li>
+            </ul>
+            <div class="legal">
+              <p><strong>查核準則第 30 條：</strong>「擬參選人登記為候選人或聲請重新計票之保證金，得列為雜支支出；其支出憑證為主管機關或管轄法院之收款收據。」</p>
+              <p>「前項保證金經退還者，不得列報；已列報者，應更正會計報告書，但首次申報會計報告書有賸餘者，無庸更正，並應於賸餘會計報告書中列為其他收入。」</p>
+              <p><strong>查核準則第 42 條：</strong>「政黨、政治團體及擬參選人之支出有退還者，應以原科目沖銷。」</p>
+              <p><a href="https://multimedia.cy.gov.tw/law/LawContent.aspx?id=FL033219" target="_blank" rel="noopener">查看監察院現行政治獻金查核準則</a></p>
+            </div>
+            <div class="example"><strong>候選人範例</strong>游子昂的候選人保證金若由政治獻金專戶支付，付款、退款要留在帳簿與憑證鏈中；若首次申報前已退還，會計報告最後不留下淨保證金支出。</div>
+          </div>
+        </article>
+
+        <article id="q5" class="qa-card">
+          <span class="qa-kicker">補貼與公約</span>
+          <h2>Q5．競選費用補貼要不要進專戶？算不算賸餘？</h2>
+          <div class="answer">
+            <p><strong>政治獻金申報與政治代理人公約要分開看。</strong>競選費用補貼是選舉委員會依選罷法核算後發給候選人的行政上補貼，不是政治獻金，不開政治獻金受贈收據，也不適用政治獻金法「收受後十五日內存入專戶」的規則。</p>
+            <ul>
+              <li>補貼未進政治獻金專戶，不要填入「未存入專戶之受贈款項」；那個欄位是尚未存入的政治獻金。</li>
+              <li>政治獻金會計報告、個人／競選服務處的補貼收款紀錄、以及公約剩餘經費計算，要分開留痕。</li>
+              <li>公約明定剩餘經費包含保證金退還、競選費用補貼等所有款項；但未進專戶的補貼是否納入公約計算，仍要由綠黨與候選人書面議定。</li>
+            </ul>
+            <div class="warn"><strong>議定時一起寫清楚：</strong>計算基準日、補貼是否納入、按比例回捐的計算式、應回捐金額，以及最後剩餘經費與資產的使用方式。</div>
+            <div class="example"><strong>候選人範例</strong>王振庭、甘崇緯、張佑輔或游子昂收到競選費用補貼時，先依選舉委員會通知與領款方式留存資料，再依綠黨與候選人議定的公約計算方式處理；不要把補貼直接當成政治獻金捐贈收入。</div>
+          </div>
+        </article>
+
+        <article id="q6" class="qa-card">
+          <span class="qa-kicker">申報時程</span>
+          <h2>Q6．補貼或保證金可能隔年入帳，是不是一定隔年再申報？</h2>
+          <div class="answer">
+            <p>不是直接套用「隔年入帳、再隔年申報」的公式。先分別確認：</p>
+            <ol>
+              <li>政治獻金會計報告的法定結算日與申報期限。</li>
+              <li>候選人保證金退還是否在首次申報前發生，或已經申報後才發生。</li>
+              <li>競選費用補貼是由誰收受、是否進專戶，以及公約怎麼約定剩餘經費。</li>
+            </ol>
+            <p>每一筆都保留通知、收款／退款證明、銀行紀錄及內部結算表，讓申報與公約結算可以對得起來。</p>
+            <div class="example"><strong>候選人範例</strong>四位候選人的申報期限相同，但補貼實際入帳日、保證金退款日與專戶結算狀態可能不同；不要用別人的入帳日期直接套用。</div>
+          </div>
+        </article>
+
+        <article id="checklist" class="qa-card">
+          <span class="qa-kicker">付款前與申報前</span>
+          <h2>共同檢查清單</h2>
+          <div class="answer">
+            <ol>
+              <li>先確認交易對象：誰出租、誰製作、誰代理、誰開票、誰收款。</li>
+              <li>契約、報價、發票／收據、匯款紀錄的名稱與金額能互相對應。</li>
+              <li>專戶付款逐筆記帳；退款或退還按原科目沖銷。</li>
+              <li>保留候選人保證金收款收據、退款通知或退款入帳紀錄。</li>
+              <li>保留競選費用補貼核發通知、掣據／收款證明及實際入帳紀錄。</li>
+              <li>把政治獻金會計報告、候選人／服務處帳務，以及公約回捐計算分成不同表格，但互相留交叉索引。</li>
+            </ol>
+          </div>
+        </article>
+
+        <section class="candidate-profile" id="candidate-gan">
+          <div><span class="tag">候選人範例 01</span><h2>甘崇緯</h2><p>新北市議員・新北市第 3 選舉區（新莊）</p></div>
+          <div class="example"><strong>使用本頁時</strong>把「甘崇緯」與「新北市第 3 選舉區（新莊）」一起寫入契約、收支檔案名稱與候選人專屬清單，不要只寫「新北市議員」。</div>
+        </section>
+        <section class="candidate-profile" id="candidate-wang">
+          <div><span class="tag">候選人範例 02</span><h2>王振庭</h2><p>臺北市議員・臺北市第 5 選舉區（中正、萬華）</p></div>
+          <div class="example"><strong>使用本頁時</strong>把「王振庭」與「臺北市第 5 選舉區（中正、萬華）」一起寫入契約、收支檔案名稱與候選人專屬清單。</div>
+        </section>
+        <section class="candidate-profile" id="candidate-chang">
+          <div><span class="tag">候選人範例 03</span><h2>張佑輔</h2><p>新北市議員・新北市第 9 選舉區（新店、深坑、石碇、坪林、烏來）</p></div>
+          <div class="example"><strong>使用本頁時</strong>把「張佑輔」與「新北市第 9 選舉區（新店、深坑、石碇、坪林、烏來）」一起寫入契約、收支檔案名稱與候選人專屬清單。</div>
+        </section>
+        <section class="candidate-profile" id="candidate-yu">
+          <div><span class="tag">候選人範例 04</span><h2>游子昂</h2><p>屏東市民代表・屏東縣屏東市第 4 選舉區（屏東市北區）</p></div>
+          <div class="example"><strong>使用本頁時</strong>把「游子昂」與「屏東縣屏東市第 4 選舉區（屏東市北區）」一起寫入契約、收支檔案名稱與候選人專屬清單。</div>
+        </section>
+
+        <section class="sources" id="sources" aria-labelledby="sources-heading">
+          <h2 id="sources-heading">核對來源</h2>
+          <ul>
+            <li><a href="https://web.greenparty.org.tw/posts/news/2026candidate/" target="_blank" rel="noopener">台灣綠黨 2026 各縣市推薦參選人</a>：候選人姓名、職位與選區。</li>
+            <li><a href="https://web.cec.gov.tw/central/article/64709" target="_blank" rel="noopener">中央選舉委員會 115 年地方公職人員選舉候選人登記名冊</a>：登記姓名、選區與推薦之政黨。</li>
+            <li><a href="https://multimedia.cy.gov.tw/law/LawContent.aspx?id=FL033219" target="_blank" rel="noopener">監察院政治獻金查核準則</a>：保證金、支出退還與會計報告處理。</li>
+            <li><a href="https://www.cy.gov.tw/law/LawContent.aspx?id=FL029130" target="_blank" rel="noopener">政治獻金法</a>：收支帳簿、會計報告與申報規範。</li>
+          </ul>
+          <p><small>最後核對：2026-09-17。候選人登記、法規及申報格式若有更新，應以最新官方資料及個案事實重新確認。</small></p>
+        </section>
+      </div>
+    </main>
+
+    <footer>台灣綠黨候選人政治獻金 Q&amp;A・供候選人與工作團隊共享使用</footer>
+  </div>
+</body>
+</html>
