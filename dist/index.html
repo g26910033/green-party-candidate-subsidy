@@ -129,10 +129,27 @@
     .candidate-card .district { display: inline-block; margin-top: 14px; padding: 5px 8px; color: var(--forest); background: var(--mint); border-radius: 7px; font-size: 13px; font-weight: 750; }
     .candidate-note { margin: 14px 0 0; padding: 13px 16px; color: #70521c; background: var(--amber-soft); border: 1px solid #f1d9a9; border-radius: var(--radius-sm); font-size: 14px; }
 
+    .search-panel { margin: 0 0 28px; padding: 20px 22px; border: 1px solid var(--line); border-radius: var(--radius-md); background: rgba(255, 255, 255, .88); box-shadow: 0 8px 24px rgba(18, 63, 49, .045); }
+    .search-heading { display: flex; align-items: end; justify-content: space-between; gap: 18px; }
+    .search-heading h2 { margin: 4px 0 0; font-size: 24px; line-height: 1.2; }
+    .search-heading p { max-width: 600px; margin: 0; color: var(--muted); font-size: 15px; }
+    .search-row { display: flex; gap: 10px; margin-top: 14px; }
+    .search-input { flex: 1; min-width: 0; padding: 12px 14px; color: var(--ink); border: 1px solid #b9cbc0; border-radius: 10px; background: #fff; font: inherit; }
+    .search-input::placeholder { color: #7d9187; }
+    .search-input:focus { border-color: var(--forest-2); box-shadow: 0 0 0 3px rgba(30, 96, 73, .13); outline: none; }
+    .search-clear { padding: 10px 15px; color: var(--forest); border: 1px solid #b9cbc0; border-radius: 10px; background: var(--mint); font: inherit; font-weight: 750; cursor: pointer; }
+    .search-clear:hover:not(:disabled) { background: #dcefd2; }
+    .search-clear:disabled { color: #9aa9a1; background: #f3f5f2; cursor: default; }
+    .search-status { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+    .search-empty { margin: 12px 0 0; padding: 11px 13px; color: #70460f; background: var(--amber-soft); border: 1px solid #f1d9a9; border-radius: 9px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
     .content-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 34px; align-items: start; }
     .toc { position: sticky; top: 18px; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius-md); background: rgba(255, 255, 255, .82); }
     .toc-title { margin: 0 0 10px; color: var(--muted); font-size: 13px; font-weight: 850; letter-spacing: .08em; }
-    .toc a { display: block; padding: 8px 10px; color: var(--ink); text-decoration: none; border-radius: 8px; font-size: 15px; line-height: 1.4; }
+    .toc-group + .toc-group { margin-top: 15px; padding-top: 13px; border-top: 1px solid var(--line); }
+    .toc-group-title { margin: 0 0 4px; padding: 0 10px; color: var(--leaf-dark); font-size: 12px; font-weight: 850; letter-spacing: .04em; }
+    .toc a { display: block; padding: 7px 10px; color: var(--ink); text-decoration: none; border-radius: 8px; font-size: 15px; line-height: 1.4; }
     .toc a:hover { color: var(--forest); background: var(--mint); }
     .toc .candidate-toc { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
     .qa-stack { display: grid; gap: 14px; }
@@ -153,6 +170,8 @@
     .candidate-profile .tag { color: #cbe8b0; font-size: 13px; font-weight: 850; letter-spacing: .06em; }
     .candidate-profile h2 { margin: 8px 0 8px; font-size: 30px; line-height: 1.15; }
     .candidate-profile p { margin: 0; color: #d8e7e0; }
+    .candidate-profile .candidate-apply { margin-top: 12px; color: #cbe8b0; font-size: 14px; }
+    .candidate-profile .candidate-apply strong { color: #f1f8ea; }
     .candidate-profile .example { margin: 0; color: #1e4f62; background: #f1fbfc; border-left-color: #90d2dc; }
     .sources { margin-top: 14px; padding: 24px 26px; border: 1px solid var(--line); border-radius: var(--radius-md); background: rgba(255, 255, 255, .88); }
     .sources h2 { margin: 0 0 10px; font-size: 24px; }
@@ -166,6 +185,9 @@
       .content-layout { grid-template-columns: 1fr; }
       .toc { position: static; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; padding: 12px; }
       .toc-title { width: 100%; margin: 0 0 3px 10px; }
+      .toc-group { width: 100%; }
+      .toc-group + .toc-group { margin-top: 7px; padding-top: 7px; }
+      .toc-group-title { margin-top: 2px; }
       .toc .candidate-toc { width: 100%; margin-top: 4px; padding-top: 8px; }
       .toc a { display: inline-block; }
     }
@@ -181,6 +203,11 @@
       .candidate-profile h2 { font-size: 26px; }
       .section-heading { display: block; }
       .section-heading p { margin-top: 8px; }
+      .search-heading { display: block; }
+      .search-heading p { margin-top: 8px; }
+      .search-row { display: block; }
+      .search-input, .search-clear { width: 100%; }
+      .search-clear { margin-top: 8px; }
     }
     @media print {
       body { background: #fff; }
@@ -210,7 +237,7 @@
     <section class="candidate-section" aria-labelledby="candidate-heading">
       <div class="section-heading">
         <h2 id="candidate-heading">四位綠黨提名候選人</h2>
-        <p>點選姓名可跳到各自的範例。以下四位是台灣綠黨提名、並在中選會候選人登記名冊中以台灣綠黨列名者。</p>
+        <p>這裡是「套用示範」：先選一位候選人，再把上方 Q&amp;A 的姓名、職位與選區帶入契約、憑證、收支檔案或回覆文字。</p>
       </div>
       <div class="candidate-grid">
         <a class="candidate-card" href="#candidate-gan">
@@ -238,35 +265,67 @@
           <span class="district">屏東市北區</span>
         </a>
       </div>
-      <p class="candidate-note">名單邊界：林裙靜是以無黨籍參選、由台灣綠黨與台灣前進陣線共同推薦的夥伴；因此不列入本頁所稱的「四位綠黨提名候選人」。</p>
+      <p class="candidate-note">使用方式：點選姓名後，看該候選人的「可套用題目」與「怎麼用」；這些只是文件寫法範例，不代表該候選人已經發生該筆交易。名單邊界：林裙靜是以無黨籍參選、由台灣綠黨與台灣前進陣線共同推薦的夥伴；因此不列入本頁所稱的「四位綠黨提名候選人」。</p>
+    </section>
+
+    <section class="search-panel" aria-labelledby="search-heading">
+      <div class="search-heading">
+        <div>
+          <span class="qa-kicker">快速查找</span>
+          <h2 id="search-heading">搜尋網站內容</h2>
+        </div>
+        <p>輸入關鍵字，可搜尋題目、答案、法規引用、候選人範例與選區。</p>
+      </div>
+      <div class="search-row">
+        <label class="sr-only" for="qa-search">搜尋政治獻金 Q&amp;A</label>
+        <input class="search-input" id="qa-search" type="search" placeholder="例如：保證金、受贈收據、游子昂、屏東市北區" autocomplete="off" spellcheck="false">
+        <button class="search-clear" id="search-clear" type="button" disabled>清除搜尋</button>
+      </div>
+      <p class="search-status" id="search-status" aria-live="polite">共有 16 題問答、4 位候選人範例，可用左側分類或上方搜尋。</p>
+      <p class="search-empty" id="search-empty" hidden>找不到符合的題目或候選人範例，請換一個關鍵字。</p>
     </section>
 
     <main id="main" class="content-layout">
       <nav class="toc" aria-label="頁面導覽">
         <p class="toc-title">快速導覽</p>
-        <a href="#q1">Q1 專戶與契約</a>
-        <a href="#q2">Q2 發票抬頭</a>
-        <a href="#q3">Q3 仲介與出租人</a>
-        <a href="#q4">Q4 自然人房東</a>
-        <a href="#q5">Q5 補貼與保證金</a>
-        <a href="#q6">Q6 政黨捐贈候選人</a>
-        <a href="#q7">Q7 專戶數量</a>
-        <a href="#q8">Q8 先行墊支</a>
-        <a href="#q9">Q9 許可前支出</a>
-        <a href="#q10">Q10 支出憑證</a>
-        <a href="#q11">Q11 工讀薪資</a>
-        <a href="#q12">Q12 免費場地</a>
-        <a href="#q13">Q13 第三人活動</a>
-        <a href="#q14">Q14 候選人自有支出</a>
-        <a href="#q15">Q15 憑證保存</a>
-        <a href="#q16">Q16 收據聯次</a>
-        <a href="#checklist">申報前清單</a>
+        <div class="toc-group">
+          <p class="toc-group-title">交易、發票與專戶</p>
+          <a href="#q1" data-search-target="q1">Q1 專戶與契約</a>
+          <a href="#q2" data-search-target="q2">Q2 發票抬頭</a>
+          <a href="#q3" data-search-target="q3">Q3 仲介與出租人</a>
+          <a href="#q4" data-search-target="q4">Q4 自然人房東</a>
+          <a href="#q7" data-search-target="q7">Q7 專戶數量</a>
+        </div>
+        <div class="toc-group">
+          <p class="toc-group-title">補貼、保證金與政黨捐贈</p>
+          <a href="#q5" data-search-target="q5">Q5 補貼與保證金</a>
+          <a href="#q6" data-search-target="q6">Q6 政黨捐贈候選人</a>
+          <a href="#q16" data-search-target="q16">Q16 收據聯次</a>
+        </div>
+        <div class="toc-group">
+          <p class="toc-group-title">支出、付款與憑證</p>
+          <a href="#q8" data-search-target="q8">Q8 先行墊支</a>
+          <a href="#q9" data-search-target="q9">Q9 許可前支出</a>
+          <a href="#q10" data-search-target="q10">Q10 支出憑證</a>
+          <a href="#q11" data-search-target="q11">Q11 工讀薪資</a>
+          <a href="#q12" data-search-target="q12">Q12 免費場地</a>
+          <a href="#q15" data-search-target="q15">Q15 憑證保存</a>
+        </div>
+        <div class="toc-group">
+          <p class="toc-group-title">活動與候選人支出限制</p>
+          <a href="#q13" data-search-target="q13">Q13 第三人活動</a>
+          <a href="#q14" data-search-target="q14">Q14 候選人自有支出</a>
+        </div>
+        <div class="toc-group">
+          <p class="toc-group-title">共用資料</p>
+          <a href="#checklist" data-search-target="checklist">申報前清單</a>
+        </div>
         <div class="candidate-toc">
           <p class="toc-title">候選人範例</p>
-          <a href="#candidate-gan">甘崇緯</a>
-          <a href="#candidate-wang">王振庭</a>
-          <a href="#candidate-chang">張佑輔</a>
-          <a href="#candidate-yu">游子昂</a>
+          <a href="#candidate-gan" data-search-target="candidate-gan">甘崇緯</a>
+          <a href="#candidate-wang" data-search-target="candidate-wang">王振庭</a>
+          <a href="#candidate-chang" data-search-target="candidate-chang">張佑輔</a>
+          <a href="#candidate-yu" data-search-target="candidate-yu">游子昂</a>
         </div>
       </nav>
 
@@ -487,20 +546,20 @@
         </article>
 
         <section class="candidate-profile" id="candidate-gan">
-          <div><span class="tag">候選人範例 01</span><h2>甘崇緯</h2><p>新北市議員・新北市第 3 選舉區（新莊）</p></div>
-          <div class="example"><strong>使用本頁時</strong>把「甘崇緯」與「新北市第 3 選舉區（新莊）」一起寫入契約、收支檔案名稱與候選人專屬清單，不要只寫「新北市議員」。</div>
+          <div><span class="tag">候選人套用示範 01</span><h2>甘崇緯</h2><p>新北市議員・新北市第 3 選舉區（新莊）</p><p class="candidate-apply"><strong>可套用題目：</strong>Q1 專戶與契約、Q11 工讀薪資。</p></div>
+          <div class="example"><strong>怎麼用</strong>使用 Q1 或 Q11 時，把候選人姓名換成「甘崇緯」，並把「新北市第 3 選舉區（新莊）」放進契約、支出檔案名稱及憑證索引。</div>
         </section>
         <section class="candidate-profile" id="candidate-wang">
-          <div><span class="tag">候選人範例 02</span><h2>王振庭</h2><p>臺北市議員・臺北市第 5 選舉區（中正、萬華）</p></div>
-          <div class="example"><strong>使用本頁時</strong>把「王振庭」與「臺北市第 5 選舉區（中正、萬華）」一起寫入契約、收支檔案名稱與候選人專屬清單。</div>
+          <div><span class="tag">候選人套用示範 02</span><h2>王振庭</h2><p>臺北市議員・臺北市第 5 選舉區（中正、萬華）</p><p class="candidate-apply"><strong>可套用題目：</strong>Q2 發票抬頭、Q8 先行墊支、Q14 自有支出。</p></div>
+          <div class="example"><strong>怎麼用</strong>需要寫發票、先行墊支或候選人自有支出時，把「王振庭」及「臺北市第 5 選舉區（中正、萬華）」帶入對應的文件與回覆。</div>
         </section>
         <section class="candidate-profile" id="candidate-chang">
-          <div><span class="tag">候選人範例 03</span><h2>張佑輔</h2><p>新北市議員・新北市第 9 選舉區（新店、深坑、石碇、坪林、烏來）</p></div>
-          <div class="example"><strong>使用本頁時</strong>把「張佑輔」與「新北市第 9 選舉區（新店、深坑、石碇、坪林、烏來）」一起寫入契約、收支檔案名稱與候選人專屬清單。</div>
+          <div><span class="tag">候選人套用示範 03</span><h2>張佑輔</h2><p>新北市議員・新北市第 9 選舉區（新店、深坑、石碇、坪林、烏來）</p><p class="candidate-apply"><strong>可套用題目：</strong>Q3 仲介與出租人、Q9 許可前支出、Q13 第三人活動。</p></div>
+          <div class="example"><strong>怎麼用</strong>遇到仲介、付款時點或第三人辦活動的問題時，把「張佑輔」與實際選區帶入交易文件、活動紀錄及支出憑證。</div>
         </section>
         <section class="candidate-profile" id="candidate-yu">
-          <div><span class="tag">候選人範例 04</span><h2>游子昂</h2><p>屏東市民代表・屏東縣屏東市第 4 選舉區（屏東市北區）</p></div>
-          <div class="example"><strong>使用本頁時</strong>把「游子昂」與「屏東縣屏東市第 4 選舉區（屏東市北區）」一起寫入契約、收支檔案名稱與候選人專屬清單。</div>
+          <div><span class="tag">候選人套用示範 04</span><h2>游子昂</h2><p>屏東市民代表・屏東縣屏東市第 4 選舉區（屏東市北區）</p><p class="candidate-apply"><strong>可套用題目：</strong>Q4 自然人房東、Q10 支出憑證、Q12 免費場地。</p></div>
+          <div class="example"><strong>怎麼用</strong>處理自然人房東、看板支出或免費場地時，把「游子昂」與「屏東縣屏東市第 4 選舉區（屏東市北區）」填入租約、收據、付款紀錄及場地資料。</div>
         </section>
 
         <section class="sources" id="sources" aria-labelledby="sources-heading">
@@ -524,5 +583,70 @@
 
     <footer>台灣綠黨候選人政治獻金 Q&amp;A・供候選人與工作團隊共享使用</footer>
   </div>
+  <script>
+    (() => {
+      const input = document.getElementById("qa-search");
+      const clearButton = document.getElementById("search-clear");
+      const status = document.getElementById("search-status");
+      const empty = document.getElementById("search-empty");
+      const questionCards = [...document.querySelectorAll(".qa-card")];
+      const candidateCards = [...document.querySelectorAll(".candidate-card")];
+      const candidateProfiles = [...document.querySelectorAll(".candidate-profile")];
+      const navLinks = [...document.querySelectorAll(".toc a[data-search-target]")];
+      const navGroups = [...document.querySelectorAll(".toc-group")];
+      const candidateNav = document.querySelector(".candidate-toc");
+
+      const normalize = (value) => value.toLocaleLowerCase("zh-Hant-TW").trim();
+
+      function applySearch() {
+        const rawQuery = input.value.trim();
+        const query = normalize(rawQuery);
+        let questionMatches = 0;
+        let candidateMatches = 0;
+
+        questionCards.forEach((card) => {
+          const matches = !query || normalize(card.textContent).includes(query);
+          card.hidden = !matches;
+          if (matches && /^q\d+$/.test(card.id)) questionMatches += 1;
+        });
+
+        candidateCards.forEach((card) => {
+          card.hidden = Boolean(query) && !normalize(card.textContent).includes(query);
+        });
+
+        candidateProfiles.forEach((profile) => {
+          const matches = !query || normalize(profile.textContent).includes(query);
+          profile.hidden = !matches;
+          if (matches) candidateMatches += 1;
+        });
+
+        navLinks.forEach((link) => {
+          const target = document.getElementById(link.dataset.searchTarget);
+          link.hidden = Boolean(query) && (!target || target.hidden);
+        });
+
+        navGroups.forEach((group) => {
+          group.hidden = Boolean(query) && ![...group.querySelectorAll("a[data-search-target]")].some((link) => !link.hidden);
+        });
+        if (candidateNav) {
+          candidateNav.hidden = Boolean(query) && ![...candidateNav.querySelectorAll("a[data-search-target]")].some((link) => !link.hidden);
+        }
+
+        clearButton.disabled = !rawQuery;
+        empty.hidden = !query || (questionMatches + candidateMatches > 0);
+        status.textContent = query
+          ? `搜尋「${rawQuery}」：找到 ${questionMatches} 題問答、${candidateMatches} 位候選人範例。`
+          : "共有 16 題問答、4 位候選人範例，可用左側分類或上方搜尋。";
+      }
+
+      input.addEventListener("input", applySearch);
+      clearButton.addEventListener("click", () => {
+        input.value = "";
+        applySearch();
+        input.focus();
+      });
+      applySearch();
+    })();
+  </script>
 </body>
 </html>
